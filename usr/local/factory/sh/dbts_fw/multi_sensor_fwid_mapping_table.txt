@@ -1,0 +1,4 @@
+manufacturer.product,sensor_id_ram_addr,sensor_id,chrome_fwid,windows_fwid,
+09e5.c50d,003c,6,47e2,,
+0dae.9a14,003c,4,47e1,,
+06af.b6ce,003c,4,47e3,,

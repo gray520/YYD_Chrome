@@ -1,0 +1,5 @@
+Supplier : 26CF
+PID : B42B
+TCON FW ver. : A1
+TOP FW ver. : A1
+A1A1

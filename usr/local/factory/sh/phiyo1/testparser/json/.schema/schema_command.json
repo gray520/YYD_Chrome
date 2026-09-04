@@ -1,0 +1,189 @@
+{
+  "$defs": {
+    "pyPack": {
+      "type": "string",
+      "pattern": "^[xcbB?hHiIlLqQpPdfs]+$"
+    },
+    "jRef": {
+      "type": "string",
+      "pattern": "^:\\w+(\\.(\\?|\\w+))*$|^\\$(options|profile)(\\.(\\?|\\w+))+$|^\\.+(\\.(\\?|\\w+))+$"
+    },
+    "jFormula": {
+      "type": "string",
+      "pattern": "^\\\\\\\\e([\\-+*/]?(:\\w+(\\.(\\?|\\w+))*|\\$(options|profile)(\\.(\\?|\\w+))+|\\.+(\\.(\\?|\\w+))+|(0x|\\\\\\\\x)[0-9abcdefABCDEF]+|([0-9]+.?[0-9]+)|(\\\\\\\\o[01234567]+)|(\\\\\\\\b[01]+)))+$"
+    },
+    "jVar": {
+      "type": "string",
+      "pattern": "\\?<([\\w_()/ ]*)?(;(int|str|float|bool)(;([^,;\\s]+))?(;([0-9]+),([0-9]+)(,[0-9]+)?)?)?>"
+    },
+    "jInt": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        { "$ref": "#/$defs/jVar" },
+        { "$ref": "#/$defs/jFormula" },
+        {"type": "integer"},
+        {
+          "type": "string",
+          "pattern": "^(0x|\\\\\\\\x)[0-9abcdefABCDEF ]+$|^([0-9]+)|(\\\\\\\\o[01234567]+)$|^(\\\\\\\\b[01]+)$"
+        }
+      ]
+    },
+    "jBytes": {
+      "oneOf": [
+        { "$ref": "#/$defs/jInt" },
+        {
+          "type": "string",
+          "pattern": "^\\\\\\\\a[0-9abcdefABCDEF ]+$"
+        }
+      ]
+    },
+    "jNumber": {
+      "oneOf": [
+        { "type": "number" },
+        { "$ref": "#/$defs/jInt" }
+      ]
+    },
+    "jBool": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        { "$ref": "#/$defs/jVar" },
+        { "type": "boolean" }
+      ]
+    },
+    "jObject": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        { "$ref": "#/$defs/jVar" },
+        {
+          "type": "object",
+          "properties": {
+            "profile": {"type": "object"},
+            "options": {"type": "object"},
+            "name": {"type": "string"}
+          }
+        }
+      ]
+    },
+    "jArray": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        { "$ref": "#/$defs/jVar" },
+        {
+          "type": "array",
+          "additionalItems": [
+            {
+              "type": "object",
+              "properties": { "name": {"type": "string", "pattern": "^profile$"} },
+              "required": ["name"]
+            },
+            {
+              "type": "object",
+              "properties": { "name": {"type": "string", "pattern": "^options$"} },
+              "required": ["name"]
+            }
+          ]
+        }
+      ]
+    },
+    "jCommandFormatProfile": {
+      "type": "object",
+      "properties": {
+        "is_to_ascii": {"type": "boolean"},
+        "is_check_sum": { "type": "boolean" }
+      },
+      "if": {
+        "properties": { "is_check_sum":  {"const": true } }
+      },
+      "then": {
+        "properties": {
+          "check_sum_section": { "type": "string" }
+        },
+        "required": ["check_sum_section"]
+      }
+    },
+    "jsonCommandSections": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/jRef"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "profile": {"type": "object"},
+              "options": {"type": "object"},
+              "index": { "$ref": "#/$defs/jInt" },
+              "length": { "$ref": "#/$defs/jInt" },
+              "is_check_sum": { "$ref": "#/$defs/jBool" },
+              "is_crc": { "$ref": "#/$defs/jBool" },
+              "bytes": { "$ref": "#/$defs/jBytes" },
+              "^bytes": { "$ref": "#/$defs/jBytes" },
+              "pack_type": { "enum": ["float", "int"] }
+            },
+            "required": ["index", "length", "bytes"]
+          }
+        ]
+      }
+    },
+    "jsonCommandProfile": {
+      "type": "object",
+      "properties": {
+        "json_command_format_name": {"type": "string"},
+        "auto_fill": { "$ref": "#/$defs/jInt" },
+        "never_fail": { "type": "boolean" },
+        "is_big_endian": { "$ref": "#/$defs/jBool" },
+        "make_sum_section_list": { "type": "array" },
+        "make_crc_section_list": { "type": "array" },
+        "convert_ascii_section_list": { "type": "array" },
+        "default_sections": { "$ref": "#/$defs/jsonCommandSections" },
+        "basic_check": {
+          "type": "array",
+          "additionalItems": {
+            "type": "object",
+            "properties": {
+              "index": { "$ref": "#/$defs/jInt" },
+              "length": { "$ref": "#/$defs/jInt" },
+              "bytes": { "$ref": "#/$defs/jInt" },
+              "^bytes": { "$ref": "#/$defs/jInt" }
+            },
+            "required": ["index", "length"]
+          }
+        }
+      }
+    },
+    "jsonCommandBytes": {
+      "type": "object",
+      "properties": {
+        "length": { "$ref": "#/$defs/jInt" },
+        "bytes": { "$ref": "#/$defs/jBytes" },
+        "sections": { "$ref": "#/$defs/jsonCommandSections" }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "profile": { "$ref": "#/$defs/jsonCommandProfile" },
+    "options": { "type": "object" }
+  },
+  "patternProperties": {
+    "^\\w+CommandSet\\w*$": {
+      "type": "object",
+      "properties": {
+        "profile": { "$ref": "#/$defs/jsonCommandProfile" },
+        "options": { "type": "object" }
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "profile": { "$ref": "#/$defs/jsonCommandProfile" },
+          "options": { "type": "object" },
+          "send": { "$ref": "#/$defs/jsonCommandBytes" },
+          "receive": { "$ref": "#/$defs/jsonCommandBytes" }
+        },
+        "required": ["send", "receive"]
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,134 @@
+{
+  "inherit": [
+    "common.test_list",
+    "generic_unprovisioned.test_list"
+  ],
+  "label": "Provision (Freddy/Fetch) Chromebook with SKU ID",
+  "constants": {
+    "phase": "PVT",
+    "default_factory_server_url": {
+      "172.0.0.0/8": "http://172.150.104.11:10000",
+      "172.0.0.0/8": "http://172.150.104.12:10000"
+    }
+  },
+  "definitions": {
+    "CheckIPSKUID": {
+      "inherit": "ExecShell",
+      "label": {
+        "en-US": "Check Lan IP",
+        "zh-CN": "\u68c0\u67e5IP"
+      },
+      "args": {
+        "commands": "bash /usr/local/factory/sh/ip_check.sh"
+      }
+    },
+    "GetBatteryCT": {
+      "pytest_name": "exec_shell",
+      "label": "Get Battery CT Value",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/get_battery_ct.sh"
+        ]
+      }
+    },
+    "GetMLBSN": {
+      "inherit": "ExecShell",
+      "label": "Get MLB SN", 
+      "args": {
+        "commands": "/usr/local/factory/sh/get_mb_sn.sh"
+      }
+    },
+    "UpdateTi50Firmware": {
+      "retries": 3
+    },
+    "StationStart": {
+      "retries": 999999999,
+      "label": {
+        "en-US": "Sync and SF",
+        "zh-CN": "\u540c\u6b65\u8fc7\u7ad9"
+      },
+      "inherit": "TestGroup",
+      "subtests": [
+        "SyncFactoryServer",
+        "Barrier",
+        "ShopfloorNotifyStart"
+      ]
+    },
+    "UpdateCBIGroup": {
+      "label": "Update CBI",
+      "subtests": [
+        "NissaUpdateCBI",
+        "Barrier",
+        "FullRebootStep"
+      ]
+    },
+    "NissaUpdateCBI": {
+      "pytest_name": "update_cbi",
+      "label": "Update Cbi",
+      "args": {
+        "config_source": "model_sku",
+        "enable_factory_server": false,
+        "program": "nissa",
+        "project": "kaladin",
+        "cbi_data_names": [
+          "SKU_ID",
+          "DRAM_PART_NUM"
+        ]
+      }
+    },
+    "SettingCBIFromSF": {
+      "inherit": "ExecShell",
+      "label": "Setting CBI From SF",
+      "args": {
+        "commands": [
+          "ectool cbi set 2 `factory device-data -g component.sku` 4"
+        ]
+      }
+    },
+    "WriteEmptyMLBSN": {
+      "pytest_name": "exec_shell",
+      "label": "Write Empty MLB SN",
+      "args": {
+        "commands": [
+          "factory device-data serials.mlb_serial_number="
+        ]
+      }
+    },
+    "RemoveActive": {
+      "inherit": "ExecShell",
+      "label": {
+        "en-US": "Remove Active",
+        "zh-CN": "\u79fb\u9664\u9ed8\u8ba4"
+      },
+      "args": {
+         "commands": "rm /usr/local/factory/py/test/test_lists/active_test_list.json"
+      }
+    },
+    "SyncFactoryServer": {
+      "args": {
+        "update_toolkit": true,
+        "sync_event_logs": false,
+        "update_without_prompt": true
+      }
+    },
+    "Provision": {
+      "label": "Kaladin/Kelsier FA SKU ID Update",
+      "locals": {
+        "station": "FAT"
+      },
+      "subtests": [
+        "GetBatteryCT",
+        "WriteEmptyMLBSN",
+        "SyncFactoryServer",
+        "UpdateTi50Firmware",
+        "StationStart",
+        "WriteDeviceDataToVPD",
+        "SettingCBIFromSF",
+        "UpdateCBIGroup",
+        "CheckPoint",
+        "RemoveActive",
+        "RebootStep"
+      ]
+    }
+  }
+}

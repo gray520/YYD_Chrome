@@ -1,0 +1,546 @@
+{
+  "profile": {
+    "auto_fill": 0,
+    "default_sections": {
+      "sop": {
+        "index": 0,
+        "length": 1,
+        "bytes": "0xa5"
+      },
+      "eop": {
+        "index": 9,
+        "length": 1,
+        "bytes": "0xff"
+      }
+    },
+    "basic_check": [
+      {
+        "index": 1,
+        "length": 1,
+        "^bytes": "\\aff"
+      }
+    ]
+  },
+  "options": {
+    "SwitchSide": {
+      "noChangeSide": 0,
+      "changeSide": 1
+    }
+  },
+  "tbt01CommandSet": {
+    "reset": {
+      "profile": {
+        "never_fail": true
+      },
+      "send": {
+        "bytes": "\\aa5 00 00 00 00 00 00 00 00 ff"
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "getId": {
+      "send": {
+        "bytes": "\\aa5 01 01 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "getSN": {
+      "send": {
+        "bytes": "\\aa5 01 02 00 00 00 00 0e 00 ff"
+      },
+      "receive": {
+        "length": 24,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "getFw": {
+      "send": {
+        "bytes": "\\aa5 01 03 00 00 00 00 06 00 ff"
+      },
+      "receive": {
+        "length": 16,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "setSysDelay": {
+      "options": {
+        "DelayType": {
+          "switchDelay": 0,
+          "resetDelay": 1,
+          "responseDelay": 2,
+          "thunderboltDelay": 7
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 02 08 00 00 00 00 02 00 ff 00 00",
+        "sections": {
+          "delayType": {
+            "index": 5,
+            "length": 2,
+            "bytes": "$options.DelayType.?"
+          },
+          "delay": {
+            "index": 10,
+            "length": 2,
+            "bytes": "?<Delay;int>"
+          }
+        }
+      },
+      "receive": {
+        "length": 12
+      }
+    },
+    "getUsbState": {
+      "send": {
+        "bytes": "\\aa5 01 09 00 00 00 00 02 00 ff"
+      },
+      "receive": {
+        "length": 12,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "setTestState": {
+      "options": {
+        "TestState": {
+          "Idle": 0,
+          "Testing": 1
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 02 0a 00 00 00 00 01 00 ff 00",
+        "sections": {
+          "testState": {
+            "index": 10,
+            "length": 1,
+            "bytes": "$options.TestState.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 11
+      }
+    },
+    "getTestState": {
+      "send": {
+        "bytes": "\\aa5 01 0b 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "usb2Connect": {
+      "send": {
+        "bytes": "\\aa5 00 10 00 00 00 00 00 00 ff",
+        "sections": {
+          "switchSide": {
+            "index": 5,
+            "length": 2,
+            "bytes": ":command.options.SwitchSide.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "getUsb2Speed": {
+      "send": {
+        "bytes": "\\aa5 01 11 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "loadCtrl": {
+      "options": {
+        "LoadPower": {
+          "off": 0,
+          "5V1A": 1,
+          "5V2A": 2,
+          "5V3A": 3
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 00 12 00 00 00 00 00 00 ff",
+        "sections": {
+          "loadPower": {
+            "index": 3,
+            "length": 2,
+            "bytes": "....options.LoadPower.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "getVbusCur": {
+      "send": {
+        "bytes": "\\aa5 01 13 00 00 00 00 04 00 ff"
+      },
+      "receive": {
+        "length": 14,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "setUsb3Generation": {
+      "options": {
+        "UsbSpeed": {
+          "Gen1": 2,
+          "Gen2": 3
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 02 18 00 00 00 00 01 00 ff 00",
+        "sections": {
+          "usbSpeed": {
+            "index": 10,
+            "length": 1,
+            "bytes": "$options.UsbSpeed.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 11
+      }
+    },
+    "getUsb3Generation": {
+      "send": {
+        "bytes": "\\aa5 01 19 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "switchUsb3": {
+      "profile": {
+        "never_fail": true
+      },
+      "send": {
+        "bytes": "\\aa5 00 1a 00 00 00 00 00 00 ff",
+        "sections": {
+          "switchSide": {
+            "index": 5,
+            "length": 2,
+            "bytes": ":command.options.SwitchSide.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "getUsb3ConnectStatus": {
+      "send": {
+        "bytes": "\\aa5 01 1b 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "usb3Reset": {
+      "profile": {
+        "never_fail": true
+      },
+      "send": {
+        "bytes": "\\aa5 00 1c 00 00 00 00 00 00 ff"
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "setUsb3ConnectState": {
+      "options": {
+        "connectState": {
+          "disconnect": 0,
+          "connect": 1
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 00 1d 00 00 00 00 00 00 ff"
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "getDpVideoResult": {
+      "send": {
+        "bytes": "\\aa5 01 21 00 00 00 00 09 00 ff"
+      },
+      "receive": {
+        "length": 19,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "getDpAudioResult": {
+      "send": {
+        "bytes": "\\aa5 01 22 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "dpReset": {
+      "send": {
+        "bytes": "\\aa5 00 23 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "setPdCap": {
+      "options": {
+        "PdMode": {
+          "sink": 1,
+          "source": 2,
+          "drp": 3
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 02 28 00 00 00 00 04 00 ff 00 00 00 00",
+        "sections": {
+          "pdMode": {
+            "index": 5,
+            "length": 2,
+            "bytes": "....options.PdMode.?"
+          },
+          "voltage": {
+            "index": 10,
+            "length": 2,
+            "bytes": "?<Voltage(mv);int;0,20000,1000>"
+          },
+          "current": {
+            "index": 12,
+            "length": 2,
+            "bytes": "?<Current(ma);int;0,5000,500>"
+          }
+        }
+      },
+      "receive": {
+        "length": 14
+      }
+    },
+    "getPdConnectStatus": {
+      "send": {
+        "bytes": "\\aa5 01 2a 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "getPdTestResult": {
+      "send": {
+        "bytes": "\\aa5 01 2b 00 00 00 00 04 00 ff"
+      },
+      "receive": {
+        "length": 14,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "switchPdDp": {
+      "profile": {
+        "never_fail": true
+      },
+      "options": {
+        "DpLanes": {
+          "dp2LanesUsb3": "0x25",
+          "dp2Lanes": "0x21",
+          "dp4Lanes": "0x41"
+        },
+        "PdMode": {
+          "off": "0x00",
+          "pdSink": "0x10",
+          "pdSource": "0x08"
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 00 2f 00 00 00 00 00 00 ff",
+        "sections": {
+          "dpPDSettings": {
+            "index": 3,
+            "length": 2,
+            "bytes": "\\e....options.DpLanes.?+....options.PdMode.?"
+          },
+          "switchSide": {
+            "index": 5,
+            "length": 2,
+            "bytes": ":command.options.SwitchSide.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "switchThunderbolt": {
+      "profile": {
+        "never_fail": true
+      },
+      "options": {
+        "PdMode": {
+          "ThunderboltOnly": "0x81",
+          "WithPdSink": "0x91",
+          "WithPdSource": "0x89"
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 00 30 00 00 00 00 00 00 ff",
+        "sections": {
+          "pdMode": {
+            "index": 3,
+            "length": 2,
+            "bytes": "....options.PdMode.?"
+          },
+          "switchSide": {
+            "index": 5,
+            "length": 2,
+            "bytes": ":command.options.SwitchSide.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "setInitState": {
+      "options": {
+        "UsbState": {
+          "FS": 1,
+          "HS": 2,
+          "USB3": 4,
+          "PDSource": 8,
+          "PdSink": 16,
+          "DP2L": 32,
+          "DP4L": 64,
+          "Thunderbolt": 128
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 01 30 00 00 00 00 01 00 ff",
+        "sections": {
+          "usbState": {
+            "index": 3,
+            "length": 2,
+            "bytes": "....options.UsbState.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "getThunderboltState": {
+      "send": {
+        "bytes": "\\aa5 01 31 00 00 00 00 01 00 ff"
+      },
+      "receive": {
+        "length": 11,
+        "profile": {
+          "check_list": ["10,-1"]
+        }
+      }
+    },
+    "setTestResult": {
+      "options": {
+        "TestResult": {
+          "Pass": 0,
+          "Fail": 1
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 02 36 00 00 00 00 01 00 ff 00",
+        "sections": {
+          "testResult": {
+            "index": 10,
+            "length": 1,
+            "bytes": "$options.TestResult.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 11
+      }
+    },
+    "headsetControl": {
+      "send": {
+        "bytes": "\\aa5 00 40 00 00 00 00 00 00 ff",
+        "sections": {
+          "switchSide": {
+            "index": 5,
+            "length": 2,
+            "bytes": ":command.options.SwitchSide.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 10
+      }
+    },
+    "audioLoopback": {
+      "options": {
+        "Loopback": {
+          "Off": 0,
+          "Left": 1,
+          "Right": 2
+        }
+      },
+      "send": {
+        "bytes": "\\aa5 00 41 00 00 00 00 00 00 ff",
+        "sections": {
+          "loopback": {
+            "index": 3,
+            "length": 2,
+            "bytes": "....options.Loopback.?"
+          },
+          "switchSide": {
+            "index": 5,
+            "length": 2,
+            "bytes": ":command.options.SwitchSide.?"
+          }
+        }
+      },
+      "receive": {
+        "length": 10
+      }
+    }
+  }
+}

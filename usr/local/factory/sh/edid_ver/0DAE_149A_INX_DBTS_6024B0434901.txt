@@ -1,0 +1,6 @@
+Supplier : 0DAE
+PID : 149A
+TCON FW ver. : A1
+TOP FW ver. : FF
+A1FF
+

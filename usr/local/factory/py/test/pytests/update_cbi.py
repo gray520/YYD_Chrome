@@ -1,0 +1,397 @@
+# Copyright 2018 The ChromiumOS Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+"""A test to update CBI data to EEPROM.
+
+Description
+-----------
+A test to set CBI data from device data to EEPROM by using ``ectool cbi``.
+Available device data are `component.sku`, `component.dram_part_num` and
+`component.pcb_supplier`. When updating the SKU ID, if the FW Config can be
+queried from the cros_config, then the FW Config will be updated as well.
+If you want to run the pytest `model_sku` with the SKU ID set by this pytest,
+you need to reboot the DUT first.
+
+Test Procedure
+--------------
+This is an automatic test that doesn't need any user interaction.
+
+Dependency
+----------
+- ``ectool`` utility.
+- ``cros_config_mock`` utility.
+- ``chromeos-base/cros-config-api``.
+
+Examples
+--------
+To set SKU_ID, DRAM_PART_NUM and PCB_SUPPLIER from device data to CBI, add
+this in test list::
+
+  {
+    "pytest_name": "update_cbi",
+    "args": {
+      "cbi_data_names": ['SKU_ID', 'DRAM_PART_NUM', 'PCB_SUPPLIER']
+    }
+  }
+
+To set SKU ID and run the pytest `model_sku`, add this in test list::
+
+  {
+    "subtests": [
+      {
+        "pytest_name": "update_cbi",
+        "args": {
+          "cbi_data_names": ['SKU_ID']
+        }
+      },
+      "FullRebootStep",
+      {
+        "pytest_name": "model_sku"
+      }
+    ]
+  }
+"""
+
+import enum
+import logging
+import os
+
+from cros.factory.device import device_utils
+from cros.factory.test import device_data
+from cros.factory.test import session
+from cros.factory.test import test_case
+from cros.factory.test.utils.cbi_utils import CbiDataName
+from cros.factory.test.utils.cbi_utils import GetCbiData
+from cros.factory.test.utils.cbi_utils import SetCbiData
+from cros.factory.test.utils import cros_config_api_utils
+from cros.factory.test.utils import model_sku_utils
+from cros.factory.test.utils import update_utils
+from cros.factory.utils.arg_utils import Arg
+from cros.factory.utils.schema import JSONSchemaDict
+
+
+_DEFAULT_SKU_ID = 0x7fffffff
+_KEY_COMPONENT_SKU = device_data.JoinKeys(
+    device_data.KEY_COMPONENT, 'sku')
+_KEY_COMPONENT_DRAM_PART_NUM = device_data.JoinKeys(
+    device_data.KEY_COMPONENT, 'dram_part_num')
+_KEY_COMPONENT_PCB_SUPPLIER = device_data.JoinKeys(
+    device_data.KEY_COMPONENT, 'pcb_supplier')
+
+_ARG_CBI_DATA_NAMES_SCHEMA = JSONSchemaDict(
+    'cbi_data_names schema object', {
+        'type': 'array',
+        'items': {
+            'enum': [
+                CbiDataName.SKU_ID, CbiDataName.DRAM_PART_NUM,
+                CbiDataName.PCB_SUPPLIER, CbiDataName.SSFC
+            ]
+        }
+    })
+
+
+class SKUIDSource(str, enum.Enum):
+  device_data = 'device_data'
+  hardcode = 'hardcode'
+
+  def __str__(self):
+    return self.name
+
+
+class ConfigSource(str, enum.Enum):
+  cros_config_mock = 'cros_config_mock'
+  config_jsonproto = 'config_jsonproto'
+  model_sku = 'model_sku'
+
+  def __str__(self):
+    return self.name
+
+
+class UpdateCBITest(test_case.TestCase):
+  """A test to set CBI fields from device data to EEPROM."""
+
+  related_components = (test_case.TestCategory.DRAM, )
+  ARGS = [
+      Arg('cbi_data_names', list, 'List of CBI data names to update',
+          schema=_ARG_CBI_DATA_NAMES_SCHEMA),
+      Arg('force', bool,
+          'If true then overwrite settings even if the sku_id is the same.',
+          default=False),
+      Arg('sku_id_source', SKUIDSource, 'The source of sku_id.',
+          default=SKUIDSource.device_data),
+      Arg('hardcode_sku_id', int, 'The hard-code sku_id.', default=None),
+      Arg('config_source', ConfigSource, 'The source of updating data.',
+          default=ConfigSource.cros_config_mock),
+      Arg('program', str, 'The program of the device.', default=None),
+      Arg('project', str, 'The project of the device.', default=None),
+      Arg(
+          'product_name', str,
+          f'The product_name of the device. If not specified, read from '
+          f'{model_sku_utils.PRODUCT_NAME_PATH} on x86 devices and '
+          f'{model_sku_utils.DEVICE_TREE_COMPATIBLE_PATH} on ARM devices.',
+          default=None),
+      Arg('enable_factory_server', bool,
+          'Update project_config data from factory server.', default=False)
+  ]
+
+  def setUp(self):
+    self._dut = device_utils.CreateDUTInterface()
+    # Check settings of sku_id_source.
+    # yapf: disable
+    if (self.args.sku_id_source != SKUIDSource.hardcode and  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+        # yapf: enable
+        # yapf: disable
+        self.args.hardcode_sku_id is not None):  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      # yapf: disable
+      raise ValueError(f'hardcode_sku_id must be None for sku_id_source: '  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+                       f'{self.args.sku_id_source}')
+    # yapf: disable
+    if (self.args.sku_id_source == SKUIDSource.hardcode and  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+        # yapf: enable
+        # yapf: disable
+        self.args.hardcode_sku_id is None):  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      # yapf: disable
+      raise ValueError(f'hardcode_sku_id must not be None for sku_id_source: '  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+                       f'{self.args.sku_id_source}')
+
+    # yapf: disable
+    if self.args.enable_factory_server:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      # yapf: disable
+      if self.args.config_source in [  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+          ConfigSource.config_jsonproto, ConfigSource.model_sku
+      ]:
+        update_success = update_utils.UpdateProjectConfig(self._dut)
+        if not update_success:
+          session.console.info('project_config is not updated')
+      else:
+        raise ValueError(
+            # yapf: disable
+            f'Nothing could be downloaded from server for config_source: '  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+            # yapf: enable
+            f'{self.args.config_source}')
+
+    self._config_jsonproto = None
+    # Check settings of config_source.
+    # yapf: disable
+    if self.args.config_source == ConfigSource.config_jsonproto:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      if not cros_config_api_utils.MODULE_READY:
+        raise ImportError(
+            # yapf: disable
+            f'cros_config_api_utils is not ready. chromeos-base/cros-config-api'  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+            # yapf: enable
+            f' is required for {self.args.config_source}.')
+      self._config_jsonproto = cros_config_api_utils.SKUConfigs(
+          # yapf: disable
+          self.args.program, self.args.project)  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+
+  def GetSKUConfigFromModelSku(self, sku_id):
+    # config_utils.LoadConfig requires a filename without extension.
+    # yapf: disable
+    if self.args.program and self.args.project:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      model_sku_path = self._dut.path.join(
+          model_sku_utils.PROJECT_CONFIG_PATH,
+          # yapf: disable
+          f'{self.args.program}_{self.args.project}_model_sku')  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+    else:
+      model_sku_path = model_sku_utils.BOXSTER
+    return model_sku_utils.GetDesignConfig(
+        self._dut,
+        default_config_dirs=os.path.dirname(__file__),
+        # yapf: disable
+        product_name=self.args.product_name,  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+        sku_id=sku_id,  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+        # yapf: enable
+        config_name=model_sku_path,
+        schema_name='model_sku')
+
+  def GetCrosConfigData(self, sku_id, custom_label_tag, path, name,
+                        return_type):
+    command = ['cros_config_mock', '--sku-id', str(sku_id)]
+    if custom_label_tag:
+      command += ['--custom-label-tag', custom_label_tag]
+    command += [path, name]
+    output = self._dut.CallOutput(command)
+    if output:
+      return return_type(output.strip())
+    logging.warning("Can't get %s/%s from cros_config_mock", path, name)
+    return None
+
+  def GetFirmwareConfigFromJsonProto(self, sku_id):
+    # yapf: disable
+    project_config = self._config_jsonproto.GetSKUConfig(sku_id)  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+    # yapf: enable
+    return project_config.hardware_features.fw_config.value
+
+  def GetFirmwareConfigFromModelSku(self, sku_id):
+    project_config = self.GetSKUConfigFromModelSku(sku_id)
+    try:
+      return project_config['fw_config']
+    except Exception:
+      logging.info('project_config has wrong format.\n%r', project_config)
+      raise
+
+  def GetFirmwareConfigFromCrosConfig(self, sku_id):
+    custom_label_tag = self._dut.vpd.ro.get('custom_label_tag')
+    return self.GetCrosConfigData(sku_id, custom_label_tag, '/firmware',
+                                  'firmware-config', int)
+
+  def GetDeviceData(self, key, data_type):  # pylint: disable=inconsistent-return-statements
+    try:
+      return device_data.GetDeviceData(key, data_type=data_type,
+                                       throw_if_none=True)
+    except Exception as e:
+      self.FailTask(f'{e}')
+
+  def CheckCbiData(self, data_name, expected_data):
+    read_data = GetCbiData(self._dut, data_name)
+    if read_data != expected_data:
+      self.FailTask(
+          f'The data_name={int(data_name)} in EEPROM ({int(read_data)}) is not '
+          f'equal to the data in device data ({int(expected_data)}) after we '
+          f'set.')
+
+  def SetSKUIDAndFWConfig(self):
+    old_sku_id = GetCbiData(self._dut, CbiDataName.SKU_ID)
+    # yapf: disable
+    if self.args.sku_id_source == SKUIDSource.device_data:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      new_sku_id = self.GetDeviceData(_KEY_COMPONENT_SKU, int)
+    else:
+      # yapf: disable
+      new_sku_id = self.args.hardcode_sku_id  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+    if old_sku_id is None:
+      self.FailTask('No valid SKU ID found in EEPROM.')
+
+    # yapf: disable
+    if not self.args.force and old_sku_id == new_sku_id:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      return
+
+    if new_sku_id > 2**32 - 1:
+      self.FailTask(
+          f'SKU ID ({int(new_sku_id)}) should not be greater than UINT32_MAX '
+          f'({int(2 ** 32 - 1)}).')
+
+    old_fw_config = GetCbiData(self._dut, CbiDataName.FW_CONFIG)
+    # yapf: disable
+    if self.args.config_source == ConfigSource.config_jsonproto:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      new_fw_config = self.GetFirmwareConfigFromJsonProto(new_sku_id)
+    # yapf: disable
+    elif self.args.config_source == ConfigSource.model_sku:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      new_fw_config = self.GetFirmwareConfigFromModelSku(new_sku_id)
+    else:
+      new_fw_config = self.GetFirmwareConfigFromCrosConfig(new_sku_id)
+
+    if old_fw_config is None and new_fw_config is None:
+      logging.info('FW CONFIG is not supported on this board.')
+    elif new_fw_config is None:
+      self.FailTask(
+          # yapf: disable
+          f'FW_CONFIG does not exist in {self.args.config_source} but is set in'  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+          # yapf: enable
+          f' EEPROM.')
+    #elif old_fw_config and old_fw_config != new_fw_config \
+    #    and old_sku_id != _DEFAULT_SKU_ID:
+    #  # The fw_config is allowed to be any value while the board is
+    #  # unprovisioned, otherwise the fw_config value must match what
+    #  # configuration says it should be based on the SKU value
+    #  self.FailTask(
+    #      # yapf: disable
+    #      f'FW CONFIG in EEPROM ({int(old_fw_config)}) is not equal to the FW '  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+    #      # yapf: enable
+    #      f'CONFIG in {self.args.config_source} ({int(new_fw_config)}).')
+
+    session.console.info('Set the new SKU_ID to EEPROM (%r -> %r).', old_sku_id,
+                         new_sku_id)
+    SetCbiData(self._dut, CbiDataName.SKU_ID, new_sku_id)
+    self.CheckCbiData(CbiDataName.SKU_ID, new_sku_id)
+
+    if new_fw_config is not None:
+      session.console.info('Set the new FW_CONFIG to EEPROM (%r -> %r).',
+                           old_fw_config, new_fw_config)
+      SetCbiData(self._dut, CbiDataName.FW_CONFIG, new_fw_config)
+      self.CheckCbiData(CbiDataName.FW_CONFIG, new_fw_config)
+
+  def SetDramPartNum(self):
+    old_dram_part_num = GetCbiData(self._dut, CbiDataName.DRAM_PART_NUM)
+    new_dram_part_num = self.GetDeviceData(_KEY_COMPONENT_DRAM_PART_NUM, str)
+
+    if old_dram_part_num == new_dram_part_num:
+      return
+
+    session.console.info('Set the new DRAM_PART_NUM to EEPROM (%r -> %r).',
+                         old_dram_part_num, new_dram_part_num)
+    SetCbiData(self._dut, CbiDataName.DRAM_PART_NUM, new_dram_part_num)
+    self.CheckCbiData(CbiDataName.DRAM_PART_NUM, new_dram_part_num)
+
+  def SetPcbSupplier(self):
+    old_pcb_supplier = GetCbiData(self._dut, CbiDataName.PCB_SUPPLIER)
+    new_pcb_supplier = self.GetDeviceData(_KEY_COMPONENT_PCB_SUPPLIER, int)
+
+    if old_pcb_supplier == new_pcb_supplier:
+      return
+
+    session.console.info('Set the new PCB_SUPPLIER to EEPROM (%r -> %r).',
+                         old_pcb_supplier, new_pcb_supplier)
+    SetCbiData(self._dut, CbiDataName.PCB_SUPPLIER, new_pcb_supplier)
+    self.CheckCbiData(CbiDataName.PCB_SUPPLIER, new_pcb_supplier)
+
+  def SetSSFC(self):
+    old_ssfc = GetCbiData(self._dut, CbiDataName.SSFC)
+
+    # case 1: SSFC is Not Needed: normal exit, print log
+    # case 2: SSFC is Needed and Success: normal exit, print value in hex
+    # case 3: SSFC is Needed but Failed: abnormal exit, print error log
+    new_ssfc_str = self._dut.CallOutput(
+        ["sudo", "-u", "rmad", "/usr/local/sbin/factory_generate_ssfc"],
+        log=True)
+
+    # case 3: If new_ssfc_str is None, it means something went wrong.
+    if new_ssfc_str is None:
+      self.FailTask('Failed to generate SSFC.')
+
+    # case 1: If new_ssfc_str is not a hex string, it means SSFC is not needed.
+    if not new_ssfc_str.startswith('0x'):
+      return
+
+    # case 2: If new_ssfc_str is a hex string, it represents SSFC value.
+    new_ssfc = int(new_ssfc_str, 16)
+    if old_ssfc == new_ssfc:
+      return
+
+    session.console.info('Set the new SSFC to CBI (%r -> %r).', old_ssfc,
+                         new_ssfc)
+    SetCbiData(self._dut, CbiDataName.SSFC, new_ssfc)
+    self.CheckCbiData(CbiDataName.SSFC, new_ssfc)
+
+  def runTest(self):
+    # yapf: disable
+    if CbiDataName.SKU_ID in self.args.cbi_data_names:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      self.SetSKUIDAndFWConfig()
+    # yapf: disable
+    if CbiDataName.DRAM_PART_NUM in self.args.cbi_data_names:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      self.SetDramPartNum()
+    # yapf: disable
+    if CbiDataName.PCB_SUPPLIER in self.args.cbi_data_names:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      self.SetPcbSupplier()
+    # yapf: disable
+    if CbiDataName.SSFC in self.args.cbi_data_names:  # type: ignore #TODO(b/338318729) Fixit! # pylint: disable=line-too-long
+      # yapf: enable
+      self.SetSSFC()

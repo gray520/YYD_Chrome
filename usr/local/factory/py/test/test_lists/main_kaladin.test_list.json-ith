@@ -1,0 +1,2008 @@
+{
+  "inherit": [
+    "common.test_list",
+    "generic_main.test_list"
+  ],
+  "label": "Kaladin Main Test-List 20260414",
+  "constants": {
+    "phase": "PVT",
+    "release_version": "16437.0.0",
+    "run_in": {
+      "sat_duration_secs": 1800,
+      "run_fishes_for_secs": 1800,
+      "dozing_sat_duration_secs": 600,
+      "reboot_warmup_secs": 30
+    },
+    "default_factory_server_url": {
+      "172.0.0.0/8": "http://172.150.128.11:10040",
+      "172.0.0.0/8": "http://172.150.128.12:10040"
+    },
+    "default_timeout_secs": 99999999,
+    "typea_usb": {
+      "usb": {
+        "usb2_sysfs_path": "/sys/devices/pci0000:00/0000:00:14.0/usb3/3-3/",
+        "usb3_sysfs_path": "/sys/devices/pci0000:00/0000:00:14.0/usb4/4-1/"
+      }
+    },
+    "typec_usb": {
+      "left": {
+        "usb2_sysfs_path": "/sys/devices/pci0000:00/0000:00:14.0/usb3/3-1/",
+        "usb3_sysfs_path": "/sys/devices/pci0000:00/0000:00:0d.0/usb2/2-1/",
+        "usbpd_id": 0,
+        "drm_sysfs_path": "/sys/class/drm/card0",
+        "display_info": {
+          "display_label": "DisplayPort",
+          "display_id": "DP-1",
+          "usbpd_spec": {
+            "port": 0
+          }
+        }
+      },
+      "right": {
+        "usb2_sysfs_path": "/sys/devices/pci0000:00/0000:00:14.0/usb3/3-2/",
+        "usb3_sysfs_path": "/sys/devices/pci0000:00/0000:00:0d.0/usb2/2-2/",
+        "usbpd_id": 1,
+        "drm_sysfs_path": "/sys/class/drm/card0",
+        "display_info": {
+          "display_label": "DisplayPort",
+          "display_id": "DP-2",
+          "usbpd_spec": {
+            "port": 1
+          }
+        }
+      }
+    },
+    "smt": {
+      "component_list": [
+        "audio_codec",
+        "battery",
+        "camera",
+        "cpu",
+        "base_accel",
+        "flash_chip",
+        "embedded_controller",
+        "storage",
+        "usb_hosts",
+        "wireless",
+        "bluetooth",
+        "touchscreen",
+        "touchpad"
+      ]
+    },
+    "grt": {
+      "enable_zero_touch": true,
+      "collect_zero_touch_ids": true,
+      "gooftool_skip_list": []
+    }
+  },
+  "options": {
+    "ui_locale": "en-US",
+    "engineering_password_sha1": "6848bf3617a2cf82bd5260a146d4a3236a20badc",
+    "skipped_tests": {
+      "device.factory.end_FAT": [],
+      "device.factory.end_RUNIN": [],
+      "device.factory.end_FFT": [],
+      "EVT": [],
+      "DVT": [],
+      "PVT": []
+    },
+    "waived_tests": {
+      "EVT": [],
+      "DVT": [],
+      "PVT": []
+    }
+  },
+  "definitions": {
+    "SMTComponents": {
+      "subtests": [
+        "ProbeBluetooth",
+        "SMTWifiSSIDList",
+        "Battery",
+        "BatterySysfs",
+        "SMTStressAppTest",
+        "SMTStressCountdown",
+        "ChargerTypeDetection",
+        "PartitionTable",
+        "VerifyRootPartition"
+      ]
+    },
+    "SMT": {
+      "label": "SMT (Kaladin SMT Functions Test)",
+      "locals": {
+        "station_num": "SMT",
+        "station_end_upload_report": true
+      },
+      "subtests": [
+        "Start",
+        "Barrier",
+        "SMTStart",
+        "SMTItems",
+        "CheckPoint",
+        "SMTEnd"
+      ]
+    },
+    "SMTStart": {
+      "inherit": "TestGroup",
+      "label": "Prepare",
+      "subtests": [
+        "ECWPPinHigh",
+        "Partitions2Protect",
+        "WaitTi50",
+        "UpdateTi50Firmware",
+        "Barrier",
+        "ReadDeviceDataFromVPD",
+        "SMTDefineSKUID",
+        "FullRebootStep",
+        "SyncFactoryServer",
+        "SMTScanMLB",
+        "SMTScanOperatorID",
+        "SMTScanStationID",
+        "SetOEMName",
+        "StationStart",
+        "FullRebootStep",
+        "ModelSKU",
+        "WriteDeviceDataToVPD",
+        "Barrier"
+      ]
+    },
+    "SMTItems": {
+      "inherit": "TestGroup",
+      "subtests": [
+        "KeyboardPowerButton",
+        "CheckSecdataVersion",
+        "SMTComponents",
+        "SMTKaladinProbe",
+        "SMTThermalLoad",
+        "FrontCamera",
+        "LEDBattery",
+        "Bluetooth",
+        {
+          "inherit": "WifiSSIDList",
+          "args": {
+            "event_log_name": "SMT_basic_ssid_list"
+          }
+        },
+        "ThermalSensors",
+        "LidSwitch",
+        "SMTCheckMem",
+        "SMTKeyboard",
+        "Touchpad",
+        "KeyboardBacklight",
+        "SpeakerDMic",
+        "AudioJack",
+        "KaladinFan",
+        "USBTypeAManualBase",
+        "USBTypeCManualTestGroup",
+        "USBTypeCManualChargeGroup"
+      ]
+    },
+    "SMTEnd": {
+      "inherit": "TestGroup",
+      "label": "Finish",
+      "subtests": [
+        "SMTUploadRegCodes",
+        "CheckRegCodeForSMT",
+        "ProbeDeviceInfo",
+        "CheckBoardID",
+        "StationEnd",
+        "Cr50SMTWriteFlashInfo",
+        "SMTDefaultSKUID",
+        "CheckPoint",
+        "DeleteToolkit",
+        "HaltStep"
+      ]
+    },
+    "StationStart": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "SyncFactoryServer",
+        "Barrier",
+        "ShopfloorNotifyStart"
+      ]
+    },
+    "ShopfloorService": {
+      "pytest_name": "shopfloor_service",
+      "run_if": "constants.enable_factory_server"
+    },
+    "FAT": {
+      "locals": {
+        "station_num": "FAT"
+      },
+      "subtests": [
+        "FATStart",
+        "FATItems",
+        "FATEnd",
+        "RebootStep",
+        "CheckPoint"
+      ]
+    },
+    "FATStart": {
+      "subtests": [
+        "GetBatteryCT",
+        "WriteEmptyMLBSN",
+        "ECWPPinHigh",
+        "Barrier",
+        "CheckHaveFanOrNot",
+        "Partitions2Protect",
+        "WaitTi50",
+        "UpdateTi50Firmware",
+        "Barrier",
+        "GetBatteryCT",
+        "StationStart",
+        "Partitions2Protect",
+        "SettingCBIFromSF",
+        "RebootStep",
+        "KaladinCustomerTag",
+        "FullRebootStep",
+        "CBIWriteGroup",
+        "UpdateFirmwareTest",
+        "Barrier",
+        "CopyManifestFromRelease",
+        "KaladinCopyManifestToCME",
+        "CopyISHFWTolib",
+        "ModelSKU",
+        "ReadDeviceDataFromVPD",
+        "CheckHaveFanOrNot",
+        "SyncFactoryServer",
+        "CheckReleaseImage",
+        "WriteDeviceDataToVPD",
+        "SpeakerDMic",
+        "Bluetooth",
+        "Barrier"
+      ]
+    },
+    "HardwareTest": {
+      "parallel": true,
+      "subtests": [
+        "PartitionTable",
+        "VerifyRootPartition",
+        "BatterySysfs",
+        "Battery",
+        "ThermalSensors",
+        "MemorySize"
+      ]
+    },
+    "FATItems": {
+      "subtests": [
+        "UpdateDBTSFW",
+        "CopyGSCTool",
+        "FullRebootStep",
+        "ST5Uniformity",
+        "HWID",
+        "HardwareCheck",
+        "CheckRegCode",
+        "SMTKaladinProbe",
+        "CopyIntelWiFiSar",
+        "CopyISHFWTolib",
+        "HardwareTest",
+        {
+          "inherit": "WifiSSIDList",
+          "args": {
+            "event_log_name": "FAT_basic_ssid_list"
+          }
+        },
+        "ReadEDIDInfo",
+        "Wireless",
+        "CopyMiniOS",
+        "CheckBatteryCapacity",
+        "Barrier"
+      ]
+    },
+    "FFT": {
+      "locals": {
+        "station_num": "FFT"
+      },
+      "subtests": [
+        "FFTItems"
+      ]
+    },
+    "FFTItems": {
+      "subtests": [
+        "DetectAccelGroup",
+        "LidSwitch",
+        "FFTAccel",
+        "BaseGyroscope",
+        "ScreenRotation",
+        "CheckRTKSar",
+        "CheckIntelWiFiSar",
+        "EnableLidSwitch",
+        "DisplayPoint",
+        "Display",
+        "FAScanProdid",
+        "FAScanSN",
+        "CheckAllSN",
+        "Barrier",
+        "SetAttestID",
+        "TabletModeOff",
+        "Keyboard",
+        "KeyboardPowerButton",
+        "AudioJack",
+        "Backlight",
+        "TabletModeOff",
+        "KeyboardBacklight",
+        "LEDBattery",
+        "FrontCameraLED",
+        "TabletModeOff",
+        "Touchpad",
+        "Touchscreen",
+        "FrontCameraQRScan",
+        "Barrier",
+        "USBTypeAManualBase",
+        "USBTypeCManualTestGroup",
+        "USBTypeCManualChargeGroup",
+        "TabletModeOff",
+        "HPRequestWeightTouchpad",
+        "SpeakerDMic",
+        "KaladinFan",
+        "KaladinCopyManifestToCME",
+        "CBXBrandedChassis",
+        "NoCBXBrandedChassis",
+        "CheckFeatureCompliance",
+        "Barrier",
+        "ResetTabletMode"
+      ]
+    },
+    "RunIn": {
+      "locals": {
+        "station_num": "Runin"
+      },
+      "subtests": [
+        "RunInItems",
+        "CheckPoint",
+        "StationEnd"
+      ]
+    },
+    "RunInItems": {
+      "subtests": [
+        "CheckACState",
+        "FullRebootStep",
+        "BatterySysfs",
+        "Battery",
+        "ThemalTestGroup",
+        "Barrier",
+        "Idle",
+        "ThemalTestWithWEBGLGroup",
+        "Barrier",
+        "ThermalSensors",
+        "MRCCache",
+        "Barrier",
+        "PartitionTable",
+        "BadBlocks",
+        "Idle",
+        "SubGroupRRTWarmReboot",
+        "Idle",
+        "RunInStressGroupWithFrontCamera",
+        "RebootStep",
+        "Barrier",
+        "RunInWebGLAquarium",
+        "RebootStep",
+        "Delay30S",
+        "IgnoreLTRCNV",
+        "RRTDozingStress",
+        "RebootStep",
+        "Idle",
+        "Barrier",
+        "VerifyRootPartition",
+        "HWID",
+        "RunInBlockingCharge",
+        "Barrier"
+      ]
+    },
+    "GRT": {
+      "inherit": "TestGroup",
+      "label": "GRT (Google Required Tests)",
+      "locals": {
+        "station_end_upload_report": true
+      },
+      "subtests": [
+        "GRTStart",
+        "GRTItems",
+        "GRTEnd",
+        "FinalizeGroup"
+      ]
+    },
+    "FinalizeGroup": {
+      "label": "Finalize",
+      "subtests": [
+        "SyncFactoryServer",
+        "KaladinCopyManifestToCME",
+        "DeletePVTDLMSKUID",
+        "ClearUnknownRWVPD",
+        "CopyMiniOS",
+        "PartitionTable",
+        "AllCheckPoint",
+        "GRTFinalizeNoCBX",
+        "GRTFinalizeCBX"
+      ]
+    },
+    "GRTItems": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "TPMVerifyAndClear",
+        "GetIntelDescriptorStatus",
+        "LockIntelDescriptor",
+        "SyncFactoryServer",
+        "CheckSecdataVersion",
+        "ReSignReleaseKernel",
+        "UploadRegCodes",
+        "UploadSerialNumberForAuditing",
+        "UploadZeroTouchIds",
+        "CheckPoint",
+        "HWID",
+        "DisableLidSwitch",
+        "Ti50APROVerification",
+        "CheckPoint"
+      ]
+    },
+    "StationEnd": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "StationEndSyncFactoryServer",
+        "ShopfloorNotifyEnd",
+        "Barrier",
+        "WriteDeviceDataToVPD"
+      ]
+    },
+    "ProbeBluetooth": {
+      "inherit": "ExecShell",
+      "label": "Probe Bluetooth",
+      "args": {
+        "commands": "lshw | grep -i Bluetooth"
+      }
+    },
+    "TPMVerifyAndClear": {
+      "retries": 5,
+      "label": {
+        "en-US":"TPMVerify And Clear",
+        "zh-CN": "\u0054\u0050\u004d\u6d4b\u8bd5\u7fa4\u7ec4"
+      },
+      "subtests": [
+        "TPMVerifyEK",
+        "ClearTPMOwnerRequest",
+        "RebootStep"
+      ]
+    },
+    "UpdateCBI": {
+      "pytest_name": "update_cbi",
+      "label": "Update CBI",
+      "args": {
+        "enable_factory_server": false,
+        "force": true,
+        "program": "nissa",
+        "project": "kaladin",
+        "cbi_data_names": [
+          "SKU_ID",
+          "DRAM_PART_NUM"
+        ]
+      }
+    },
+    "LidSwitch": {
+      "pytest_name": "lid_switch",
+      "label": "Lid Switch",
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+	"device_filter": "Lid Switch"
+      }
+    },
+    "KeyboardPowerButton": {
+      "subtests": [
+        {
+          "inherit": "Button",
+          "label": "Power Button",
+          "args": {
+            "button_key_name": "ectool:-GSC_EC_PWR_BTN_ODL",
+            "button_name": "i18n! Power Button"
+          }
+        }
+      ]
+    },
+    "Keyboard": {
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+        "has_numpad": false,
+        "allow_multi_keys": true,
+        "has_power_key": true,
+        "skip_keycodes": [116]
+      }
+    },
+    "KeyboardBacklight": {
+      "pytest_name": "keyboard_backlight",
+      "run_if": "device.component.has_keyboard_backlight"
+    },
+    "ECWPPinHigh": {
+      "inherit": "ExecShell",
+      "label": "EC WP Pin High",
+      "args": {
+        "commands": [
+          "ectool gpioget EC_WP_ODL | tr ' ' '_' | grep GPIO_EC_WP_ODL_=_1"
+        ]
+      }
+    },
+    "ChargeDischargeCurrent": {
+      "pytest_name": "battery_current",
+      "label": "Charge Discharge Current",
+      "exclusive_resources": [
+        "POWER"
+      ],
+      "args": {
+        "min_charging_current": null,
+        "min_discharging_current": null,
+        "current_difference": 400,
+        "retry_times": 3,
+        "max_battery_level": 90
+      }
+    },
+    "Bluetooth": {
+      "retries": 5,
+      "args": {
+        "prompt_scan_message": false
+      }
+    },
+    "Delay30S": {
+      "pytest_name": "exec_shell",
+      "label": "Delay30S",
+      "args": {
+        "commands": [
+          "sleep 30"
+        ]
+      }
+    },
+    "WaitTi50": {
+      "pytest_name": "exec_shell",
+      "label": "Wait for Ti50 Ready",
+      "args": {
+        "commands": [
+          "while true; do if [ $(cat /proc/uptime |awk -F'.' '{print $1}') -lt 60 ]; then echo wait; sleep 5; else break; fi; done"
+        ]
+      }
+    },
+    "UpdateCBIGroup": {
+      "subtests": [
+        "SetCBIToDefault",
+        "Barrier",
+        "UpdateCBI",
+        "Barrier",
+        "FullRebootStep"
+      ]
+    },
+    "SetOEMName": {
+      "pytest_name": "exec_shell",
+      "label": "SetOEMName (*)",
+      "args": {
+        "commands": [
+          "ectool cbi set 4 HP 0",
+          "factory device-data oem_name=HP"
+        ]
+      }
+    },
+    "Touchscreen": {
+      "__replace__": true,
+      "run_if": "device.component.has_touchscreen",
+      "pytest_name": "touchscreen",
+      "args": {
+        "timeout_secs": 2000000,
+        "x_segments": 7,
+        "y_segments": 7
+      }
+    },
+    "Touchpad": {
+      "args": {
+        "number_to_quadrant": 1,
+        "number_to_click": 4,
+        "x_segments": 3,
+        "y_segments": 3,
+        "timeout_secs": 2000000
+      }
+    },
+    "BadBlocks": {
+      "run_if": "not device.factory.my_ufs"
+    },
+    "USBTypeCManualTestGroup": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "USBTypeCManualUSB1",
+        "USBTypeCManualUSB2",
+        "USBTypeCManualDisplay"
+      ]
+    },
+    "USBTypeCManualUSB1": {
+      "inherit": "TestGroup",
+      "parallel": true,
+      "label": "TypeC USB",
+      "layout": {
+        "type": "tiled",
+        "options": {
+          "columns": 3
+        }
+      },
+      "subtests": [
+        "USB3CC1PerformanceMid",
+        "USB3CC2PerformanceMid",
+        "TypeCUSB2PerformanceMid"
+      ]
+    },
+    "USBTypeCManualUSB2": {
+      "inherit": "TestGroup",
+      "parallel": true,
+      "label": "TypeC USB",
+      "layout": {
+        "type": "tiled",
+        "options": {
+          "columns": 3
+        }
+      },
+      "subtests": [
+        "Idle",
+        "USB3CC1PerformanceOut",
+        "USB3CC2PerformanceOut",
+        "TypeCUSB2PerformanceOut"
+      ]
+    },
+    "USB3CC1PerformanceMid": {
+      "retries": 5,
+      "inherit": "USBPerformance",
+      "label": "USB3 CC1 Performance (Mid)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.left",
+        "usb_label": "i18n! Left USB TypeC"
+      },
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+        "sysfs_path": "eval! constants.typec_usb.left.usb3_sysfs_path",
+        "usbpd_port_polarity": [
+          "eval! locals.usb.usbpd_id",
+          1
+        ]
+      }
+    },
+    "USB3CC2PerformanceMid": {
+      "retries": 5,
+      "inherit": "USBPerformance",
+      "label": "USB3 CC2 Performance (Mid)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.left",
+        "usb_label": "i18n! Left USB TypeC"
+      },
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+        "sysfs_path": "eval! constants.typec_usb.left.usb3_sysfs_path",
+        "usbpd_port_polarity": [
+          "eval! locals.usb.usbpd_id",
+          2
+        ]
+      }
+    },
+    "TypeCUSB2PerformanceMid": {
+      "retries": 5,
+      "inherit": "USBPerformance",
+      "label": "USB2 Performance (Mid)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.left",
+        "usb_label": "i18n! Left USB TypeC"
+      },
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+        "sysfs_path": "eval! constants.typec_usb.left.usb2_sysfs_path"
+      }
+    },
+    "USB3CC1PerformanceOut": {
+      "retries": 5,
+      "inherit": "USBPerformance",
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "label": "USB3 CC1 Performance (Out)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.right",
+        "usb_label": "i18n! Left USB TypeC"
+      },
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+        "sysfs_path": "eval! constants.typec_usb.right.usb3_sysfs_path",
+        "usbpd_port_polarity": [
+          "eval! locals.usb.usbpd_id",
+          1
+        ]
+      }
+    },
+    "USB3CC2PerformanceOut": {
+      "retries": 5,
+      "inherit": "USBPerformance",
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "label": "USB3 CC2 Performance (Out)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.right",
+        "usb_label": "i18n! Left USB TypeC"
+      },
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+        "sysfs_path": "eval! constants.typec_usb.right.usb3_sysfs_path",
+        "usbpd_port_polarity": [
+          "eval! locals.usb.usbpd_id",
+          2
+        ]
+      }
+    },
+    "TypeCUSB2PerformanceOut": {
+      "retries": 5,
+      "inherit": "USBPerformance",
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "label": "USB2 Performance (Out)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.right",
+        "usb_label": "i18n! Left USB TypeC"
+      },
+      "args": {
+        "timeout_secs": "eval! constants.default_timeout_secs",
+        "sysfs_path": "eval! constants.typec_usb.right.usb2_sysfs_path"
+      }
+    },
+    "USBTypeCManualDisplay": {
+      "label": "TypeC Display",
+      "inherit": "TestGroup",
+      "subtests": [
+        "USBTypeCManualLeft2",
+        "USBTypeCManualRight2"
+      ]
+    },
+    "USBTypeCManualLeft2": {
+      "retries": 5,
+      "inherit": "USBTypeCManualBase3",
+      "label": "Manual Test Left TypeC HDMI",
+      "locals": {
+        "usb": "eval! constants.typec_usb.left",
+        "usb_label": "i18n! Left USB TypeC"
+      }
+    },
+    "USBTypeCManualRight2": {
+      "retries": 5,
+      "inherit": "USBTypeCManualBase3",
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "label": "Manual Test Right TypeC HDMI",
+      "locals": {
+        "usb": "eval! constants.typec_usb.right",
+        "usb_label": "i18n! Right USB TypeC"
+      }
+    },
+    "USBTypeCManualBase3": {
+      "inherit": "ExternalDisplay",
+      "label": "USB3 External Display Test",
+      "args": {
+        "display_info": [
+          "eval! locals.usb.display_info"
+        ]
+      }
+    },
+    "SyncFactoryServer": {
+      "args": {
+        "update_toolkit": true,
+        "sync_event_logs": false,
+        "update_without_prompt": true
+      }
+    },
+    "USBTypeCManualChargeGroup": {
+      "label": "TypeC Charge Group",
+      "inherit": "TestGroup",
+      "subtests": [
+        "USBTypeCManualChargeLeft20V",
+        "USBTypeCManualChargeRight20V"
+      ]
+    },
+    "USBTypeCManualChargeLeft20V": {
+      "retries": 5,
+      "inherit": "USBTypeCManualCharge",
+      "label": "20V Charging (Mid)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.left",
+        "usb_label": "i18n! Left USB TypeC",
+        "voltage": 20
+      }
+    },
+    "USBTypeCManualChargeRight20V": {
+      "retries": 5,
+      "inherit": "USBTypeCManualCharge",
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "label": "20V Charging (Out)",
+      "locals": {
+        "usb": "eval! constants.typec_usb.right",
+        "usb_label": "i18n! Right USB TypeC",
+        "voltage": 20
+      }
+    },
+    "FFTAccel": {
+      "inherit": "FactoryTest",
+      "label": "Accelerometers test",
+      "run_if": "device.component.has_tabletmode",
+      "subtests": [
+        "BaseAccelerometersCalibration",
+        "LidAccelerometersCalibration",
+        "AccelerometersLidAngle",
+        "Barrier"
+      ]
+    },
+    "BaseGyroscope": {
+      "label": "Gyroscope",
+      "run_if": "device.component.has_tabletmode",
+      "subtests": [
+        "GyroscopeCalibration",
+        "Gyroscope"
+      ]
+    },
+    "Gyroscope": {
+      "pytest_name": "gyroscope",
+      "label": "Gyroscope",
+      "args": {
+        "timeout_secs": 9999,
+        "is_ish_enabled": true,
+        "rotation_threshold": 1.0,
+        "stop_threshold": 0.1
+      }
+    },
+    "ScreenRotation": {
+      "run_if": "device.component.has_tabletmode",
+      "label": "Screen Rotation",
+      "subtests": [
+        {
+          "pytest_name": "tablet_mode",
+          "args": {
+            "lid_filter": "Lid Switch",
+            "timeout_secs": 9999,
+            "prompt_flip_tablet": true
+          }
+        },
+        {
+          "pytest_name": "tablet_rotation",
+          "label": "Tablet Rotation Accelerometers",
+          "args": {
+            "timeout_secs": 9999,
+            "degrees_to_orientations": {
+              "base": {
+                "0": {
+                  "in_accel_x": 0,
+                  "in_accel_y": -1,
+                  "in_accel_z": 0
+                },
+                "90": {
+                  "in_accel_x": 1,
+                  "in_accel_y": 0,
+                  "in_accel_z": 0
+                },
+                "180": {
+                  "in_accel_x": 0,
+                  "in_accel_y": 1,
+                  "in_accel_z": 0
+                },
+                "270": {
+                  "in_accel_x": -1,
+                  "in_accel_y": 0,
+                  "in_accel_z": 0
+                }
+              },
+              "lid": {
+                "0": {
+                  "in_accel_x": 0,
+                  "in_accel_y": 1,
+                  "in_accel_z": 0
+                },
+                "90": {
+                  "in_accel_x": 1,
+                  "in_accel_y": 0,
+                  "in_accel_z": 0
+                },
+                "180": {
+                  "in_accel_x": 0,
+                  "in_accel_y": -1,
+                  "in_accel_z": 0
+                },
+                "270": {
+                  "in_accel_x": -1,
+                  "in_accel_y": 0,
+                  "in_accel_z": 0
+                }
+              }
+            },
+            "spec_offset": [
+              1.5,
+              1.5
+            ]
+          }
+        },
+        {
+          "pytest_name": "tablet_mode",
+          "label": "Notebook Mode",
+          "args": {
+            "timeout_secs": 9999,
+            "lid_filter": "Lid Switch",
+            "prompt_flip_notebook": true
+          }
+        }
+      ]
+    },
+    "BaseAccelerometersCalibration": {
+      "inherit": "AccelerometersCalibration",
+      "args": {
+        "location": "base",
+        "orientation": {
+          "in_accel_x": 0,
+          "in_accel_y": 0,
+          "in_accel_z": 1
+        },
+        "spec_offset": [
+          1.5,
+          1.5
+        ]
+      }
+    },
+    "LidAccelerometersCalibration": {
+      "inherit": "AccelerometersCalibration",
+      "args": {
+        "autostart": true,
+        "location": "lid",
+        "orientation": {
+          "in_accel_x": 0,
+          "in_accel_y": 0,
+          "in_accel_z": 1
+        },
+        "spec_offset": [
+          1.5,
+          1.5
+        ]
+      }
+    },
+    "AccelerometersLidAngle": {
+      "args": {
+        "autostart": true
+      }
+    },
+    "CBIWriteGroup": {
+      "label": "Write CBI Group",
+      "subtests": [
+        "UpdateCBI",
+        "FullRebootStep",
+        "Barrier"
+      ]
+    },
+    "SMTUploadRegCodes": {
+      "inherit": "SyncFactoryServer",
+      "label": "Upload Reg (ECHO) Codes to activate",
+      "args": {
+        "sync_event_logs": false,
+        "sync_time": true,
+        "update_toolkit": false,
+        "upload_report": false,
+        "upload_reg_codes": true,
+        "flush_testlog": false
+      }
+    },
+    "CheckRegCode": {
+      "pytest_name": "check_regcode",
+      "label": "Check RegCode"
+    },
+    "SMTCheckMem": {
+      "pytest_name": "smt_hardware_check",
+      "label": "Check Memory Size",
+      "args": {
+        "check_cpu_model": false,
+        "check_memory_size": true,
+        "check_lcd_pid": false,
+        "check_storage_size": true,
+        "check_display_type": false
+      }
+    },
+    "HardwareCheck": {
+      "pytest_name": "hardware_check",
+      "label": "Hardware Check",
+      "args": {
+        "check_cpu_model": false,
+        "check_memory_size": true,
+        "check_lcd_pid": false,
+        "check_storage_size": true,
+        "check_display_type": false
+      }
+    },
+    "KaladinFan": {
+      "run_if": "device.component.cpu_n355",
+      "pytest_name": "fan_speed",
+      "label": "Fan Speed",
+      "disable_services": [
+        "dptf"
+      ],
+      "args": {
+        "probe_interval_secs": 0.2,
+        "target_rpm": [
+          3000,
+          4500,
+          4900
+        ],
+        "error_margin": 300
+      }
+    },
+    "SMTKeyboard": {
+      "pytest_name": "keyboard",
+      "args": {
+        "allow_multi_keys": true,
+        "has_numpad": false
+      }
+    },
+    "SMTKaladinProbe": {
+      "inherit": "Probe",
+      "args": {
+        "config_file": "probe_kaladin_for_match_sku_components.json",
+        "overridden_rules": "eval! device.component.match_sku_components"
+      }
+    },
+    "WaitHWID": {
+      "pytest_name": "message",
+      "label": "Wait HWID",
+      "args": {
+        "manual_check": true,
+        "background_color": "green",
+        "html": "i18n! <b> WAIT HWID </b>"
+      }
+    },
+    "HWID": {
+      "retries": 1,
+      "subtests": [
+        "CopyISHFWTolib",
+        "FullRebootStep",
+        "SyncFactoryServer",
+        "KaladinCopyManifestToCME",
+        "Delay30S",
+        "WriteHWID",
+        "Barrier"
+      ]
+    },
+    "RunInWebGLAquarium": {
+      "args": {
+        "full_screen": false,
+        "duration_secs": "eval! constants.run_in.run_fishes_for_secs"
+      }
+    },
+    "WriteMacAddr": {
+      "pytest_name": "exec_shell",
+      "label": "Write MAC Addr",
+      "args": {
+        "commands": [
+          "factory device-data factory.wifi_mac=`ifconfig wlan0 | grep ether | cut -d ' ' -f 10`",
+          "factory device-data factory.bt_mac=`hciconfig | grep -i 'BD Address' | cut -d ' ' -f 3`"
+        ]
+      }
+    },
+    "ShopfloorActivateRegCode": {
+      "inherit": "ShopfloorService",
+      "label": "Shopfloor Service (ActivateRegCode)",
+      "args": {
+        "method": "ActivateRegCode"
+      }
+    },
+    "USB2Performance": {
+      "inherit": "USBPerformance",
+      "label": "USB2 Performance",
+      "args": {
+        "sysfs_path": "eval! constants.typea_usb.usb.usb2_sysfs_path"
+      }
+    },
+    "USB3Performance": {
+      "inherit": "USBPerformance",
+      "label": "USB3 Performance",
+      "args": {
+        "sysfs_path": "eval! constants.typea_usb.usb.usb3_sysfs_path"
+      }
+    },
+    "ReadEDIDInfo": {
+      "pytest_name": "exec_shell",
+      "label": "Read EDID Info",
+      "args": {
+        "commands": "bash /usr/local/factory/sh/read_edid.sh"
+      }
+    },
+    "HPRequestThermalTestInstall": {
+      "pytest_name": "exec_shell",
+      "label": "HP Request Thermal Install ptat",
+      "args": {
+        "commands": "bash /usr/local/factory/sh/install_ptat.sh"
+      }
+    },
+    "HPRequestThermalTestCreatePath": {
+      "pytest_name": "exec_shell",
+      "label": "HP Request Thermal Test cp json to path",
+      "args": {
+        "commands": [
+          "mkdir -p /home/user/chronos/Documents/iPTAT/script",
+          "cp /usr/local/factory/sh/0702cpustress30min.json /home/chronos/user/MyFiles/Downloads/Documents/iPTAT/script ",
+          "cp /usr/local/factory/sh/0702cpustress30min.json /usr/local/Intel/PTAT"
+        ]
+      }
+    },
+    "HPRequestSetFanRPM": {
+      "pytest_name": "exec_shell",
+      "label": "HP Request Thermal Test Set Fan RPM",
+      "args": {
+        "commands": "ectool pwmsetfanrpm 4500"
+      }
+    },
+    "HPRequestThermalTest": {
+      "pytest_name": "exec_shell",
+      "label": "HP Request Thermal Test ptat",
+      "args": {
+        "commands": "bash /usr/local/factory/sh/execute_ptat_cpu.sh"
+      }
+    },
+    "HPRequestThermalTestCopyLog": {
+      "pytest_name": "exec_shell",
+      "label": "HP Request Thermal Log Upload",
+      "args": {
+        "commands": "cp /home/chronos/user/MyFiles/Downloads/Documents/iPTAT/log/log_cpu_*.csv /var/factory/testlog/attachments"
+      }
+    },
+    "HPRequestThermalTestGroup15000": {
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "inherit": "TestGroup",
+      "parallel": true,
+      "subtests": [
+        "RunInWebGLAquarium15000",
+        "HPRequestThermalTest"
+      ]
+    },
+    "HPRequestThermalTestGroup5000": {
+      "run_if": "device.component.has_mother_board_usb_c==1",
+      "inherit": "TestGroup",
+      "parallel": true,
+      "subtests": [
+        "RunInWebGLAquarium5000",
+        "HPRequestThermalTest"
+      ]
+    },
+    "HPRequestThermalTestGroup1000": {
+      "inherit": "TestGroup",
+      "parallel": true,
+      "subtests": [
+        "RunInWebGLAquarium1000",
+        "HPRequestThermalTest"
+      ]
+    },
+    "USBTypeAManualBase": {
+      "inherit": "TestGroup",
+      "parallel": true,
+      "layout": {
+        "type": "tiled",
+        "options": {
+          "rows": 2,
+          "columns": 2
+        }
+      },
+      "subtests": [
+        "USB3Performance",
+        "USB2Performance"
+      ]
+    },
+    "RRTDozingStress": {
+      "retries": 5,
+      "label": "Dozing Stress",
+      "parallel": true,
+      "subtests": [
+        {
+          "retries": 5,
+          "inherit": "StressAppTest",
+          "args": {
+            "seconds": "eval! constants.run_in.dozing_sat_duration_secs",
+            "free_memory_only": true
+          }
+        },
+        {
+          "retries": 5,
+          "inherit": "SuspendStress",
+          "args": {
+            "cycles": "eval! constants.run_in.dozing_sat_duration_secs // 60",
+            "suspend_delay_min_secs": 25,
+            "suspend_delay_max_secs": 30,
+            "resume_delay_min_secs": 25,
+            "resume_delay_max_secs": 30,
+            "pre_suspend_command": "bash /usr/local/factory/sh/debug_suspend.sh Pre_Oper suspend",
+            "post_resume_command": "bash /usr/local/factory/sh/debug_suspend.sh Post_Oper suspend"
+          }
+        },
+        {
+          "retries": 5,
+          "inherit": "RunInCountdown",
+          "args": {
+            "duration_secs": "eval! constants.run_in.dozing_sat_duration_secs"
+          }
+        }
+      ]
+    },
+    "RunInWebGLAquarium1000": {
+      "inherit": "RunInWebGLAquarium",
+      "label": "Webgl Aquarium 1000",
+      "__comment": "Monitor the performance of graphics.",
+      "args": {
+        "duration_secs": "eval! constants.run_in.run_fishes_for_secs",
+        "num_fish": 1000
+      }
+    },
+    "SubGroupRRTWarmReboot": {
+      "retries": 5,
+      "iterations": 15,
+      "label": "Warm Reboot",
+      "subtests": [
+        {
+          "inherit": "ExecShell",
+          "label": "WarmReboot (SH_Pre-Operation)",
+          "args": {
+            "commands": "bash /usr/local/factory/sh/debug_reboot.sh Pre_Oper warmreboot"
+          }
+        },
+        {
+          "inherit": "RebootStep",
+          "label": "Do-Reboot",
+          "args": {
+            "warmup_post_shutdown": "eval! constants.run_in.reboot_warmup_secs"
+          }
+        },
+        {
+          "inherit": "ExecShell",
+          "label": "WarmReboot (SH_Post-Operation)",
+          "args": {
+            "commands": "bash /usr/local/factory/sh/debug_reboot.sh Post_Oper warmreboot"
+          }
+        }
+      ]
+    },
+    "Partitions2Protect": {
+      "pytest_name": "exec_shell",
+      "label": "Get WP Partitions 2",
+      "args": {
+        "commands": [
+          "/usr/share/vboot/bin/make_dev_ssd.sh -r --partitions 2 "
+        ]
+      }
+    },
+    "Confirm15Wor6W": {
+      "pytest_name": "exec_shell",
+      "label": "HP Request Confirm 15W or 6W",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/confirm_15w_6w.sh"
+        ]
+      }
+    },
+    "CheckPTATLog": {
+      "pytest_name": "exec_shell",
+      "label": "Check PTAT Log Result",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/check_ptat_log.sh"
+        ]
+      }
+    },
+    "AudioJack": {
+      "args": {
+        "check_cras": false,
+        "require_dongle": true,
+        "check_dongle": true,
+        "initial_actions": [
+          [
+            "sof-hda-dsp",
+            null
+          ]
+        ],
+        "input_dev": [
+          "sof-hda-dsp",
+          "0"
+        ],
+        "mic_source": "Extmic",
+        "output_dev": [
+          "sof-hda-dsp",
+          "0"
+        ],
+        "output_volume": 10,
+        "tests_to_conduct": [
+          {
+            "freq_threshold": 300,
+            "rms_threshold": [
+              0.08,
+              null
+            ],
+            "type": "sinewav"
+          }
+        ]
+      }
+    },
+    "SpeakerDMic": {
+      "args": {
+        "autostart": true,
+        "check_dongle": true,
+        "initial_actions": [
+          [
+            "sof-hda-dsp",
+            null
+          ]
+        ],
+        "input_dev": [
+          "sof-hda-dsp",
+          "Dmic"
+        ],
+        "mic_source": "Dmic",
+        "output_dev": [
+          "sof-hda-dsp",
+          "Speaker"
+        ],
+        "output_volume": 10,
+        "require_dongle": false,
+        "tests_to_conduct": [
+          {
+            "input_channels": [
+              0,
+              1
+            ],
+            "threshold": 80,
+            "type": "audiofun",
+            "volume_gain": 30
+          }
+        ]
+      }
+    },
+    "HPRequestWeightTouchpad": {
+      "label": "HP Request Weight TP Test",
+      "pytest_name": "hp_touchpad",
+      "args": {
+        "number_to_quadrant": 3,
+        "number_to_click": 0,
+        "x_segments": 0,
+        "y_segments": 0,
+        "timeout_secs": 200
+      }
+    },
+    "LEDBattery": {
+      "label": "Test Battery LED",
+      "pytest_name": "led",
+      "args": {
+        "challenge": true,
+        "target_leds": [
+          "BATTERY"
+        ],
+        "colors": [
+          [
+            "BATTERY",
+            "AMBER"
+          ],
+          [
+            "BATTERY",
+            "WHITE"
+          ],
+          [
+            "BATTERY",
+            "OFF"
+          ]
+        ]
+      }
+    },
+    "UpdateFirmwareTest": {
+      "label": "Update Firmware",
+      "retries": 2,
+      "subtests": [
+        {
+          "pytest_name": "update_firmware",
+          "retries": 2,
+          "args": {
+            "unlock_csme": false,
+            "from_release": true,
+            "force_update": true
+          }
+        },
+        "FullRebootStep"
+      ]
+    },
+    "SetAttestID": {
+      "label": {
+        "en-US": "Set ZTE Attest ID",
+        "zh-CN": "\u8bbe\u5b9a\u005a\u0054\u0045"
+      },
+      "pytest_name": "set_attested_device_id"
+    },
+    "DeleteToolkit": {
+      "run_if": "not device.component.cpu_n355",
+      "pytest_name": "exec_shell",
+      "label": "Delete Toolkit",
+      "args": {
+        "commands": [
+          "rm -rf /usr/local/factory/enabled"
+        ]
+      }
+    },
+    "CheckHaveFanOrNot": {
+      "pytest_name": "exec_shell",
+      "label": "Check Have Fan or not",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/check_cpu_type.sh"
+        ]
+      }
+    },
+    "CopyISHFWTolib": {
+      "pytest_name": "exec_shell",
+      "label": "Copy ISH FW To lib",
+      "args": {
+        "commands": [
+          "cp /usr/local/factory/sh/kaladin_ish.bin /lib/firmware/intel/kaladin_ish.bin && sleep 3 && sync",
+          "cp /usr/local/factory/sh/lite_ish.bin /lib/firmware/intel/lite_ish.bin && sleep 3 && sync"
+        ]
+      }
+    },
+    "FrontCameraQRScan": {
+      "inherit": "FrontCamera",
+      "label": "Front Camera QR Scan",
+      "args": {
+        "mode": "qr",
+        "QR_string": "PASS",
+        "timeout_secs": 2000000
+      }
+    },
+    "FAScanMLB": {
+      "inherit": "Scan",
+      "label": "Scan MLB SN",
+      "args": {
+        "device_data_key": "component.mlb_serial_number",
+        "event_log_key": "mlb_serial_number",
+        "regexp": "[A-Z0-9]{11}$",
+        "label": "i18n! MLB Serial Number"
+      }
+    },
+    "FAScanSN": {
+      "inherit": "Scan",
+      "label": "Scan Serial Number",
+      "args": {
+        "device_data_key": "component.serial_number",
+        "event_log_key": "serial_number",
+        "regexp": "[A-Z0-9]{10}$",
+        "label": "i18n! Serial Number"
+      }
+    },
+    "FAScanProdid": {
+      "inherit": "Scan",
+      "label": "Scan PROD ID",
+      "args": {
+        "device_data_key": "component.fa_prodid",
+        "event_log_key": "fa_prodid",
+        "regexp": "[A-Z0-9]{9}$",
+        "label": "i18n! fa_prodid"
+      }
+    },
+    "FAScanFAModel": {
+      "inherit": "Scan",
+      "label": "Scan FA Model",
+      "args": {
+        "device_data_key": "component.fa_model",
+        "event_log_key": "fa_model",
+        "regexp": "[A-Z0-9]{12}$",
+        "label": "i18n! fa_model"
+      }
+    },
+    "FAScanProdID": {
+      "inherit": "Scan",
+      "label": "Scan PROD ID",
+      "args": {
+        "device_data_key": "component.prod_id",
+        "event_log_key": "prod_id",
+        "regexp": "[A-Z0-9]{9}$",
+        "label": "i18n! PROD ID"
+      }
+    },
+    "CheckAllSN": {
+      "pytest_name": "exec_shell",
+      "label": "Check All SN",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/check_all_sn.sh"
+        ]
+      }
+    },
+    "ST5Uniformity": {
+      "pytest_name": "exec_shell",
+      "label": "ST5 Uniformity Test",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/uniformity/st5_test.sh"
+        ]
+      }
+    },
+    "Wireless": {
+      "__comment": "AP setting for Wireless test. 2.4G uses channels 1(2412), 4(2427), 8(2447). 5G uses channels 149(5745), 153(5765), 157(5785).",
+      "retries": 5,
+      "args": {
+        "press_space_to_start": false,
+        "ignore_missing_services": true,
+        "device_name": "wlan0",
+        "services": [
+          [
+            "hap80211BChrome",
+            null,
+            null
+          ],
+          [
+            "hap80211A",
+            null,
+            null
+          ],
+          [
+            "HP_D_24G",
+            null,
+            null
+          ],
+          [
+            "HP_D_5G",
+            null,
+            null
+          ],
+          [
+            "hap80211B",
+            null,
+            null
+          ],
+          [
+            "hap80211C",
+            null,
+            null
+          ],
+          [
+            "hap80211D",
+            null,
+            null
+          ],
+          [
+            "Inventec-RD",
+            null,
+            "BU3Rd+1234562025a."
+          ],
+          [
+            "hap80211E",
+            null,
+            null
+          ],
+          [
+            "hap80211F",
+            null,
+            null
+          ],
+          [
+            "hap80211G",
+            null,
+            null
+          ]
+        ],
+        "strength": {
+          "main": -65,
+          "aux": -65,
+          "all": -65
+        },
+        "switch_antenna_config": {
+          "main": [
+            1,
+            3
+          ],
+          "aux": [
+            2,
+            3
+          ],
+          "all": [
+            3,
+            3
+          ]
+        },
+        "keep_monitor": true,
+        "scan_count": 10
+      }
+    },
+    "GyroscopeCalibration": {
+      "pytest_name": "gyroscope_calibration",
+      "label": "Gyroscope Calibration",
+      "run_if": "not constants.has_device_data or device.component.has_base_gyroscope",
+      "args": {
+        "is_ish_enabled": true
+      }
+    },
+    "GRTFinalizeCBX": {
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "pytest_name": "finalize",
+      "args": {
+        "enable_factory_server": "eval! constants.enable_factory_server",
+        "enforced_release_channels": "eval! ['stable'] if options.phase == 'PVT' else None",
+        "enable_zero_touch": "eval! constants.grt.enable_zero_touch",
+        "ec_pubkey_path": "eval! constants.grt.ec_pubkey_path",
+        "ec_pubkey_hash": "eval! constants.grt.ec_pubkey_hash",
+        "gooftool_skip_list": "eval! constants.grt.gooftool_skip_list",
+        "gooftool_waive_list": "eval! constants.grt.gooftool_waive_list",
+        "hwid_need_vpd": "eval! constants.hwid_need_vpd",
+        "has_ec_pubkey": "eval! constants.has_ec_pubkey",
+        "factory_process": "eval! constants.factory_process",
+        "secure_wipe": "eval! constants.grt.secure_wipe",
+        "upload_method": "eval! 'factory_server' if constants.enable_factory_server else 'none'",
+        "write_protection": "eval! constants.grt.force_write_protect or options.phase == 'PVT'",
+        "cbi_eeprom_wp_status": "Absent",
+        "is_reference_board": "eval! constants.grt.is_reference_board",
+        "project": "eval! constants.grt.project",
+        "mode": "ASSEMBLED",
+        "skip_feature_tiering_steps": false,
+        "block_dev_mode": "eval! constants.grt.block_dev_mode"
+      }
+    },
+    "GRTFinalizeNoCBX": {
+      "run_if": "device.component.has_mother_board_usb_c==1",
+      "pytest_name": "finalize",
+      "args": {
+        "enable_factory_server": "eval! constants.enable_factory_server",
+        "enforced_release_channels": "eval! ['stable'] if options.phase == 'PVT' else None",
+        "enable_zero_touch": "eval! constants.grt.enable_zero_touch",
+        "ec_pubkey_path": "eval! constants.grt.ec_pubkey_path",
+        "ec_pubkey_hash": "eval! constants.grt.ec_pubkey_hash",
+        "gooftool_skip_list": "eval! constants.grt.gooftool_skip_list",
+        "gooftool_waive_list": "eval! constants.grt.gooftool_waive_list",
+        "hwid_need_vpd": "eval! constants.hwid_need_vpd",
+        "has_ec_pubkey": "eval! constants.has_ec_pubkey",
+        "factory_process": "eval! constants.factory_process",
+        "secure_wipe": "eval! constants.grt.secure_wipe",
+        "upload_method": "eval! 'factory_server' if constants.enable_factory_server else 'none'",
+        "write_protection": "eval! constants.grt.force_write_protect or options.phase == 'PVT'",
+        "cbi_eeprom_wp_status": "Absent",
+        "is_reference_board": "eval! constants.grt.is_reference_board",
+        "project": "eval! constants.grt.project",
+        "mode": "ASSEMBLED",
+        "skip_feature_tiering_steps": true,
+        "block_dev_mode": "eval! constants.grt.block_dev_mode"
+      }
+    },
+    "GetMLBSN": {
+      "inherit": "ExecShell",
+      "label": "Get MLB SN",
+      "args": {
+        "commands": "factory device-data serials.mlb_serial_number=`vpd -i RO_VPD -g mlb_serial_number`"
+      }
+    },
+    "SettingCBIFromSF": {
+      "inherit": "ExecShell",
+      "label": "Setting CBI From SF",
+      "args": {
+        "commands": [
+          "ectool cbi set 2 `factory device-data -g component.sku` 4"
+        ]
+      }
+    },
+    "CheckReleaseImage": {
+      "pytest_name": "check_image_version",
+      "label": "Check Release Image",
+      "args": {
+        "require_space": false,
+        "check_release_image": true,
+        "min_version": "eval! constants.release_version",
+        "reimage": false,
+        "use_netboot": false
+      }
+    },
+    "Ti50APROVerification": {
+      "inherit": "TestGroup",
+      "label": "Ti50 AP RO Verification",
+      "subtests": [
+        {
+          "pytest_name": "ti50_ap_ro_verification",
+          "run_if": "constants.phase == 'PVT'",
+          "label": "Ti50 AP RO Verification (PVT)",
+          "allow_reboot": true,
+          "args": {
+            "enable_swwp": true,
+            "two_stages": "eval! constants.factory_process == 'TWOSTAGES'"
+          }
+        },
+        {
+          "pytest_name": "ti50_ap_ro_verification",
+          "label": "Ti50 AP RO Verification (pre-PVT)",
+          "run_if": "constants.phase != 'PVT'",
+          "allow_reboot": true,
+          "args": {
+            "enable_swwp": false,
+            "two_stages": "eval! constants.factory_process == 'TWOSTAGES'"
+          }
+        }
+      ]
+    },
+    "CBXBrandedChassis": {
+      "run_if": "device.component.cbx",
+      "pytest_name": "cbx_branded_chassis",
+      "args": {
+        "rma_mode": "eval! constants.factory_process == 'RMA'"
+      }
+    },
+    "NoCBXBrandedChassis": {
+      "run_if": "not device.component.cbx",
+      "pytest_name": "no_cbx_branded_chassis",
+      "args": {
+        "rma_mode": "eval! constants.factory_process == 'RMA'"
+      }
+    },
+    "CopyChromeosConfig": {
+      "run_if": "device.component.cpu_n355",
+      "pytest_name": "exec_shell",
+      "label": "Copy Chromeos Config",
+      "args": {
+        "commands": [
+          "cp /usr/local/factory/sh/chromeos-config/configfs.img /usr/share/chromeos-config",
+          "cp /usr/local/factory/sh/chromeos-config/identity.bin /usr/share/chromeos-config",
+          "cp /usr/local/factory/sh/chromeos-config/yaml/config.yaml /usr/share/chromeos-config/yaml/config.yaml",
+          "cp /usr/local/factory/sh/chromeos-config/yaml/project-config.json /usr/share/chromeos-config/yaml/project-config.json",
+          "sync",
+          "sudo chmod 777 -R /usr/share/chromeos-config"
+        ]
+      }
+    },
+    "KaladinCustomerTag": {
+      "run_if": "device.component.cbx",
+      "pytest_name": "exec_shell",
+      "label": "Write CBX Tag For Kaladin",
+      "args": {
+        "commands": [
+          "vpd -s custom_label_tag=kaladin_cbx"
+        ]
+      }
+    },
+    "GetDUTInfo": {
+      "pytest_name": "exec_shell",
+      "label": "Get DUT Info",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/get_dut_info.sh"
+        ]
+      }
+    },
+    "CopyIntelWiFiSar": {
+      "run_if": "device.component.intel_wireless",
+      "pytest_name": "exec_shell",
+      "label": "Check WiFi Intel Sar Table",
+      "args": {
+        "commands": [
+          "cp /usr/local/factory/sh/iwlwifi.conf /etc/modprobe.d/",
+          "sync",
+          "sleep 2"
+        ]
+      }
+    },
+    "CheckIntelWiFiSar": {
+      "run_if": "device.component.intel_wireless",
+      "pytest_name": "exec_shell",
+      "label": "Check WiFi Intel Sar Table",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/check_iwlwifi_0826.sh"
+        ]
+      }
+    },
+    "GetBatteryCT": {
+      "pytest_name": "exec_shell",
+      "label": "Get Battery CT Value",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/get_battery_ct.sh"
+        ]
+      }
+    },
+    "CheckRTKSar": {
+      "pytest_name": "exec_shell",
+      "label": "Check RTK W/L Sar",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/check_rtk_sar.sh"
+        ]
+      }
+    },
+    "CheckBatteryCapacity": {
+      "pytest_name": "exec_shell",
+      "label": "Check Battery Capacity",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/battery_capacity.sh"
+        ]
+      }
+    },
+    "ThemalTestGroup": {
+      "retries": 3,
+      "label": "HP Request Thermal Test",
+      "subtests": [
+        "Confirm15Wor6W",
+        "HPRequestThermalTestInstall",
+        "HPRequestThermalTestCreatePath",
+        "HPRequestSetFanRPM",
+        "HPRequestThermalTest",
+        "HPRequestThermalTestCopyLog",
+        "CheckPTATLog",
+        "RebootStep"
+      ]
+    },
+    "ThemalTestWithWEBGLGroup": {
+      "retries": 3,
+      "label": "HP Request Thermal With WebGL Test",
+      "subtests": [
+        "Confirm15Wor6W",
+        "HPRequestThermalTestInstall",
+        "HPRequestThermalTestCreatePath",
+        "HPRequestSetFanRPM",
+        "HPRequestThermalTestGroup1000",
+        "HPRequestThermalTestCopyLog",
+        "CheckPTATLog",
+        "RebootStep"
+      ]
+    },
+    "KaladinCopyManifestToCME": {
+      "pytest_name": "exec_shell",
+      "label": "Kaladin Copy Manifest to CME",
+      "args": {
+        "commands": [
+          "mkdir /usr/local/cme -p",
+          "mkdir /usr/local/cme/ish -p",
+          "mkdir /usr/local/factory/cme -p",
+          "mkdir /usr/local/factory/cme/ish -p",
+          "cp /usr/local/factory/sh/component_manifest.json /usr/local/cme/component_manifest.json -rf",
+          "cp /usr/local/factory/sh/component_manifest.json /usr/local/factory/cme/component_manifest.json -rf",
+          "cp /usr/local/factory/sh/component_manifest_kaladin.json /usr/local/cme/ish/component_manifest.json -rf",
+          "cp /usr/local/factory/sh/component_manifest_kaladin.json /usr/local/factory/cme/ish/component_manifest.json -rf"
+        ]
+      }
+    },
+    "IgnoreLTRCNV": {
+      "pytest_name": "exec_shell",
+      "label": "Ignore LTR CNV",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/ignore_ltr_cnv.sh"
+        ]
+      }
+    },
+    "UpdateTi50Firmware": {
+      "inherit": "TestGroup",
+      "label": "Update Ti50 Firmware",
+      "subtests": [
+        {
+          "pytest_name": "update_cr50_firmware",
+          "label": "Update Ti50 Firmware",
+          "args": {
+            "from_release": true
+          }
+        },
+        {
+          "inherit": "RebootStep",
+          "run_if": "device.factory.cr50_update_need_reboot"
+        },
+        "CheckTi50FirmwareVersion",
+        "ClearInactiveTi50Slot"
+      ]
+    },
+    "TabletModeOff": {
+      "pytest_name": "exec_shell",
+      "label": "Tablet Mode off",
+      "args": {
+        "commands": [
+          "ectool tabletmode off"
+        ]
+      }
+    },
+    "ResetTabletMode": {
+      "pytest_name": "exec_shell",
+      "label": "Reset Tablet Mode",
+      "args": {
+        "commands": [
+          "ectool tabletmode reset"
+        ]
+      }
+    },
+    "RunInPass": {
+      "pytest_name": "message",
+      "label": "RunIn Test Pass",
+      "args": {
+        "manual_check": true,
+        "background_color": "green",
+        "html": "i18n! <b> RunIn PASS </b>"
+      }
+    },
+    "CheckACState": {
+      "pytest_name": "exec_shell",
+      "label": "Check AC State",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/check_ac.sh"
+        ]
+      }
+    },
+    "SMTKaladinProbeACCEL": {
+      "label": "Detect G-Sensor",
+      "inherit": "Probe",
+      "args": {
+        "config_file": "probe_kaladin_for_match_sku_components_accel.json",
+        "overridden_rules": "eval! device.component.match_sku_components"
+      }
+    },
+    "DetectAccelGroup": {
+      "retries": 5,
+      "label": "Detect G-Sensor Group",
+      "subtests": [
+        "CopyISHFWTolib",
+        "KaladinCopyManifestToCME",
+        "FullRebootStep",
+        "Delay30S",
+        "SMTKaladinProbeACCEL"
+      ]
+    },
+    "WriteEmptyMLBSN": {
+      "pytest_name": "exec_shell",
+      "label": "Write Empty MLB SN",
+      "args": {
+        "commands": [
+          "factory device-data serials.mlb_serial_number="
+        ]
+      }
+    },
+    "UpdateDBTSFW": {
+      "pytest_name": "exec_shell",
+      "label": "Update DBTS Panel FW",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/dbts_fw/dbts_fw_up.sh"
+        ]
+      }
+    },
+    "DeletePVTDLMSKUID": {
+      "pytest_name": "exec_shell",
+      "label": "Delete PVT DLM SKU ID",
+      "args": {
+        "commands": [
+          "vpd -i RO_VPD -d dlm_sku_id | true"
+        ]
+      }
+    },
+    "CopyManifestFromRelease": {
+      "pytest_name": "exec_shell",
+      "label": "Copy Manifest From Release",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/copy_manifest_from_release.sh"
+        ]
+      }
+    },
+    "CopyGSCTool": {
+      "pytest_name": "exec_shell",
+      "label": "Copy gsctool to Sbin",
+      "args": {
+        "commands": [
+          "cp -rf /usr/local/factory/sh/gsctool /usr/sbin/"
+        ]
+      }
+    },
+    "Phiyo1port": {
+      "retries": 2,
+      "pytest_name": "exec_shell",
+      "run_if": "device.component.has_mother_board_usb_c==1",
+      "label": "Type C Phiyo 1 Port",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/phiyo1/run.sh"
+        ]
+      }
+    },
+    "Phiyo2port": {
+      "retries": 2,
+      "pytest_name": "exec_shell",
+      "run_if": "device.component.has_mother_board_usb_c==2",
+      "label": "Type C Phiyo 2 Port",
+      "args": {
+        "commands": [
+          "bash /usr/local/factory/sh/phiyo2/run.sh"
+        ]
+      }
+    },
+    "FATP": {
+      "subtests": [
+        "FAT",
+        "FFT",
+        "RunIn",
+        "GRT"
+      ]
+    }
+  },
+  "tests": [
+    "FATP"
+  ]
+}

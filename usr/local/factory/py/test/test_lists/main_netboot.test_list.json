@@ -1,0 +1,44 @@
+{
+  "inherit": [
+    "common.test_list",
+    "generic_unprovisioned.test_list"
+  ],
+  "label": "Kaladin/Kelsier Flash Net BIOS",
+  "constants": {
+    "phase": "EVT"
+  },
+  "definitions": {
+    "Idle": {
+      "args": {
+        "wait_secs": 10
+      }
+    },
+    "KelsierFlashNetBIOS": {
+      "inherit": "ExecShell",
+      "label": "Flash Net BIOS",
+      "args": {
+        "commands": "flashrom -p internal -w /usr/local/factory/board/kaladin_fa_net.bin"
+      }
+    },
+    "SettingSKUtoDefault": {
+      "inherit": "ExecShell",
+      "label": "Setting SKU ID To Default",
+      "args": {
+        "commands": "ectool cbi set 2 0x7fffffff 4 && ectool cbi set 6 0xc000001f 4 && vpd -d custom_lable_tag | true"
+      }
+    },
+    "Provision": {
+      "label": "Kelsier Flash Net BIOS",
+      "locals": {
+        "station": "FAT"
+      },
+      "subtests": [
+        "Idle",
+        "SettingSKUtoDefault",
+        "KelsierFlashNetBIOS",
+        "CheckPoint",
+        "FullRebootStep"
+      ]
+    }
+  }
+}

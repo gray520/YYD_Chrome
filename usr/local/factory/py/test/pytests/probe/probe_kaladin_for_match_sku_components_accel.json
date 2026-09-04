@@ -1,0 +1,32 @@
+{
+  "base_accel": {
+    "generic": {
+      "eval": [
+        {
+          "shell": {
+            "command": "cat /sys/bus/platform/devices/cros-ec-accel.*/iio:device*/label | grep base",
+            "key": "name"
+          }
+        }
+      ],
+      "expect": {
+        "name": "accel-base"
+      }
+    }
+  },
+  "lid_accel": {
+    "generic": {
+      "eval": [
+        {
+          "shell": {
+            "command": "cat /sys/bus/platform/devices/cros-ec-accel.*/iio:device*/label | grep display",
+            "key": "name"
+          }
+        }
+      ],
+      "expect": {
+        "name": "accel-display"
+      }
+    }
+  }
+}

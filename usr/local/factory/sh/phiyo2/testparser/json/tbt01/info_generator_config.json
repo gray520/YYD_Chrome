@@ -1,0 +1,14 @@
+{
+  "json_command_set": ":command.tbt01CommandSet",
+  "json_config": ":test_config.main",
+  "serial_timeout": 5,
+  "vid": "0xff68",
+  "pid": "0xff73",
+  "package_pycaseset": "tbt01",
+  "module_info_gen": "tbt01infogen",
+  "class_py_test_case": "TBT01PyTestCase",
+  "class_device": "TBT01DeviceOperator",
+  "class_test_case_info": "TBT01TestCaseInfo",
+  "class_info_manager": "TBT01TestInfoManager",
+  "class_info_writer": "TBT01TestInfoWriter"
+}

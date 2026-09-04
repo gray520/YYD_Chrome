@@ -1,0 +1,813 @@
+{
+  "model": {
+    "kaladin": {
+      "component.audio_card_name": "sof-hda-dsp",
+      "component.fingerprint_board": null,
+      "component.has_base_accelerometer": true,
+      "component.has_base_gyroscope": null,
+      "component.has_base_magnetometer": null,
+      "component.has_daughter_board_usb_a": null,
+      "component.has_daughter_board_usb_c": null,
+      "component.has_fingerprint": null,
+      "component.has_front_camera": true,
+      "component.has_lid_accelerometer": true,
+      "component.has_lid_gyroscope": null,
+      "component.has_lid_magnetometer": null,
+      "component.has_lte": null,
+      "component.has_mother_board_usb_a": 1,
+      "component.has_proximity_sensor": null,
+      "component.has_rear_camera": false,
+      "component.has_sd_reader": null,
+      "component.has_stylus": false,
+      "component.has_tabletmode": true,
+      "component.has_touchscreen": true,
+      "component.has_wifi": true,
+      "component.headphone_codec": "ALC3247",
+      "component.speaker_amp": "ALC3247"
+    },
+    "kelsier": {
+      "component.audio_card_name": "sof-hda-dsp",
+      "component.fingerprint_board": null,
+      "component.has_base_accelerometer": null,
+      "component.has_base_gyroscope": null,
+      "component.has_base_magnetometer": null,
+      "component.has_daughter_board_usb_a": null,
+      "component.has_daughter_board_usb_c": null,
+      "component.has_fingerprint": null,
+      "component.has_front_camera": true,
+      "component.has_lid_accelerometer": null,
+      "component.has_lid_gyroscope": null,
+      "component.has_lid_magnetometer": null,
+      "component.has_lte": null,
+      "component.has_mother_board_usb_a": 1,
+      "component.has_proximity_sensor": null,
+      "component.has_rear_camera": false,
+      "component.has_sd_reader": null,
+      "component.has_stylus": false,
+      "component.has_tabletmode": false,
+      "component.has_wifi": true,
+      "component.headphone_codec": "ALC3247",
+      "component.speaker_amp": "ALC3247"
+    }
+  },
+  "oem_name": {
+    "kaladin": {
+      "": "HP",
+      "kaladin_cbx": "HP"
+    },
+    "kelsier": {
+      "": "HP",
+      "kelsier_cbx": "HP"
+    }
+  },
+  "product_sku": {
+    "Kaladin": {
+      "5439494": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 2,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 2147483663
+      },
+      "5439501": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 9
+      },
+      "5439518": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1033
+      },
+      "5439522": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 2147484681
+      },
+      "5439523": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 2147484681
+      },
+      "5439524": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 2,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073741855
+      },
+      "5439525": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 2,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073741855
+      },
+      "5439537": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 25
+      },
+      "5439554": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1049
+      },
+      "5439558": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 2147484697
+      },
+      "5439573": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 57
+      },
+      "5439590": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 1,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],        
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1081
+      },
+      "5505050": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 1,
+        "component.has_touchscreen": false,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            0
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 8
+      },
+      "5505052": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 1,
+        "component.has_touchscreen": true,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 8
+      },
+      "5505056": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 1,
+        "component.has_touchscreen": false,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            0
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 2147483656
+      },
+      "5505057": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 1,
+        "component.has_touchscreen": true,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 2147483656
+      },
+      "5505061": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 2,
+        "component.has_touchscreen": false,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            0
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073742862
+      },
+      "5505063": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 2,
+        "component.has_touchscreen": true,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073742862
+      },
+      "5505064": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 2,
+        "component.has_touchscreen": true,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073742862
+      },
+      "5505090": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 1,
+        "component.has_touchscreen": false,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            0
+          ],
+          [
+            "usb_host",
+            "==",
+            2
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 2147484680
+      },
+      "5505114": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 2,
+        "component.has_touchscreen": true,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073742894
+      },
+      "5505115": {
+        "component.has_keyboard_backlight": true,
+        "component.has_mother_board_usb_c": 2,
+        "component.has_touchscreen": true,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073742894
+      },
+      "2147483647": {
+        "component.has_keyboard_backlight": false,
+        "component.has_mother_board_usb_c": 2,
+        "component.match_sku_components": [
+          [
+            "audio_codec",
+            "==",
+            5
+          ],
+          [
+            "camera",
+            "==",
+            1
+          ],
+          [
+            "touchscreen",
+            "==",
+            1
+          ],
+          [
+            "usb_host",
+            "==",
+            3
+          ],
+          [
+            "stylus",
+            "==",
+            0
+          ]
+        ],
+        "fw_config": 1073741839
+      }
+    }
+  }
+}

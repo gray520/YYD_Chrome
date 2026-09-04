@@ -1,0 +1,4 @@
+{
+  "using_config": ":test_config.main",
+  "json_info_gen_config": ":info_generator_config"
+}

@@ -1,0 +1,1046 @@
+{
+  "inherit": [
+    "base.test_list"
+  ],
+  "constants": {
+    "boot_to_shimless": false,
+    "__comment_boot_to_shimless": "Initiate Shimless RMA after wiping.",
+    "default_factory_server_url": "",
+    "__comment_default_factory_server_url": "The default URL to factory server, if not defined in locals.",
+    "enable_factory_server": true,
+    "__comment_enable_factory_server": "Enable factory_server. Change this to false by adding 'disable_factory_server.test_list' to beginning of inherit list in main test list. Note that some factory environment might not need a shopfloor.",
+    "factory_process": "FULL",
+    "__comment_factory_process": "The process that a device/MLB is produced or assembled. The value should be one of FactoryProcessEnum.",
+    "has_device_data": false,
+    "__comment_has_device_data": "When setting to true, some test objects will use the info from device data to decide to run or not.",
+    "has_ec_pubkey": false,
+    "has_fan": true,
+    "has_keybox": false,
+    "__comment_has_keybox": "Set to true if factory provisioning for Widevine keyboxes is needed. Note that the provisioning process is only available in AMD project.",
+    "hdmi1": {
+      "display_info": [
+        [
+          "HDMI External Display",
+          "DP-4"
+        ]
+      ]
+    },
+    "hdmi2": {
+      "display_info": [
+        [
+          "HDMI External Display",
+          "DP-1"
+        ]
+      ]
+    },
+    "hwid_need_vpd": false,
+    "__comment_hwid_need_vpd": "Set to true if some rules in the HWID database rely on VPD data",
+    "overlord": {
+      "overlord_urls": [],
+      "tls_no_verify": true
+    },
+    "__comment_overlord_overlord_urls": "The urls of overlord server. e.g. 192.168.1.1. Don't contain http or port number.",
+    "__comment_overlord_tls_no_verify": "Skip the certificate verification or not. DUTs are usually in local network, it's fine to skip the verification.",
+    "retimer": {
+      "controller_ports": [
+        "0-0:1.1",
+        "0-0:3.1"
+      ],
+      "usb_ports": [
+        0,
+        1
+      ],
+      "min_retimer_version": "21.0"
+    },
+    "sd": {
+      "sysfs_path": ""
+    },
+    "__comment_sd_sysfs_path": "Use 'udevadm monitor' to find out udev sysfs path.",
+    "typea_usb": {
+      "left": {
+        "usb2_sysfs_path": "",
+        "usb3_sysfs_path": ""
+      },
+      "right": {
+        "usb2_sysfs_path": "",
+        "usb3_sysfs_path": ""
+      }
+    },
+    "typec_usb": {
+      "left": {
+        "usb2_sysfs_path": "/sys/devices/pci0000:00/0000:00:xx.y/usb1/?-?",
+        "usb3_sysfs_path": "/sys/devices/pci0000:00/0000:00:xx.y/usb2/?-?",
+        "tbt_controller_port": "0-1.*",
+        "usbpd_id": -1,
+        "display_info": [
+          "DisplayPort",
+          "DP-1"
+        ]
+      },
+      "right": {
+        "usb2_sysfs_path": "/sys/devices/pci0000:00/0000:00:xx.y/usb1/?-?",
+        "usb3_sysfs_path": "/sys/devices/pci0000:00/0000:00:xx.y/usb2/?-?",
+        "tbt_controller_port": "0-3.*",
+        "usbpd_id": -1,
+        "display_info": [
+          "DisplayPort",
+          "DP-2"
+        ]
+      },
+      "back": {}
+    },
+    "update_firmware": {
+      "reboot_type": "full_reboot"
+    }
+  },
+  "definitions": {
+    "ActivateRegCode": {
+      "inherit": "ShopfloorService",
+      "label": "Activate Registration Code",
+      "args": {
+        "method": "ActivateRegCode"
+      }
+    },
+    "AllCheckPoint": {
+      "inherit": "CheckPoint",
+      "label": "Check Point for All Tests",
+      "args": {
+        "include_parents": true
+      }
+    },
+    "Barrier": {
+      "pytest_name": "summary",
+      "label": "Barrier",
+      "allow_reboot": true,
+      "action_on_failure": "STOP",
+      "disable_abort": true,
+      "args": {
+        "disable_input_on_fail": true,
+        "pass_without_prompt": true,
+        "accessibility": true
+      }
+    },
+    "BrandedChassis": {
+      "pytest_name": "branded_chassis",
+      "args": {
+        "rma_mode": "eval! constants.factory_process == 'RMA'"
+      }
+    },
+    "Button": {
+      "pytest_name": "button",
+      "args": {
+        "timeout_secs": 120
+      }
+    },
+    "Buzzer": {
+      "pytest_name": "buzzer",
+      "args": {
+        "gpio_index": "eval! constants.buzzer.gpio_index",
+        "beep_duration_secs": 0.3,
+        "mute_duration_secs": 0.5
+      }
+    },
+    "CEC": {
+      "pytest_name": "cec",
+      "args": {
+        "power_on": false,
+        "power_off": false
+      }
+    },
+    "CECHDMI1": {
+      "inherit": "TestGroup",
+      "label": "HDMI1 CEC Test",
+      "subtests": [
+        {
+          "inherit": "CheckDisplay",
+          "locals": {
+            "display": "eval! constants.hdmi1"
+          }
+        },
+        {
+          "inherit": "CEC",
+          "args": {
+            "index": 1
+          }
+        }
+      ]
+    },
+    "CECHDMI2": {
+      "inherit": "TestGroup",
+      "label": "HDMI2 CEC Test",
+      "subtests": [
+        {
+          "inherit": "CheckDisplay",
+          "locals": {
+            "display": "eval! constants.hdmi2"
+          }
+        },
+        "CEC"
+      ]
+    },
+    "CECUSBTypeCHDMI": {
+      "inherit": "TestGroup",
+      "label": "Type C HDMI CEC Test",
+      "locals": {
+        "usb": "eval! constants.typec_usb.back",
+        "usb_label": "i18n! Back USB TypeC"
+      },
+      "subtests": [
+        {
+          "inherit": "USBTypeCManualExternalDisplay",
+          "args": {
+            "start_output_only": false,
+            "stop_output_only": false,
+            "connect_only": true
+          }
+        },
+        {
+          "inherit": "CEC",
+          "args": {
+            "index": 1
+          }
+        }
+      ]
+    },
+    "ChargeDischargeCurrent": {
+      "pytest_name": "battery_current",
+      "label": "Charge Discharge Current",
+      "exclusive_resources": [
+        "POWER"
+      ],
+      "args": {
+        "min_charging_current": 150,
+        "min_discharging_current": 400,
+        "timeout_secs": 30,
+        "max_battery_level": 90
+      }
+    },
+    "ChargerTypeDetection": {
+      "pytest_name": "ac_power",
+      "label": "Charger Type Detection"
+    },
+    "CheckDisplay": {
+      "inherit": "ExternalDisplay",
+      "label": "Check Display Connection",
+      "args": {
+        "start_output_only": false,
+        "stop_output_only": false,
+        "connect_only": true,
+        "display_info": "eval! locals.display.display_info",
+        "drm_sysfs_path": "/sys/class/drm/card0"
+      }
+    },
+    "CheckFeatureCompliance": {
+      "pytest_name": "feature_compliance_version",
+      "args": {
+        "hwid_need_vpd": "eval! constants.hwid_need_vpd",
+        "rma_mode": "eval! constants.factory_process == 'RMA'"
+      }
+    },
+    "CheckPDCFirmware": {
+      "pytest_name": "check_pdc_firmware",
+      "label": "Check PDC Firmware",
+      "args": {
+        "min_fw_version_dec": "0.0.0.0.0.0.27.0"
+      }
+    },
+    "CheckPoint": {
+      "inherit": "Barrier",
+      "label": "Check Point",
+      "args": {
+        "pass_without_prompt": false
+      }
+    },
+    "CheckReleaseImage": {
+      "pytest_name": "check_image_version",
+      "label": "Check Release Image",
+      "args": {
+        "check_release_image": true,
+        "use_netboot": false
+      }
+    },
+    "CheckReleaseLVMStateful": {
+      "pytest_name": "check_release_lvm_stateful"
+    },
+    "CheckRetimerFirmware": {
+      "pytest_name": "check_retimer_firmware",
+      "args": {
+        "controller_ports": "eval! constants.retimer.controller_ports",
+        "usb_ports": "eval! constants.retimer.usb_ports",
+        "min_retimer_version": "eval! constants.retimer.min_retimer_version"
+      }
+    },
+    "CheckSerialNumber": {
+      "pytest_name": "check_serial_number",
+      "label": "Check Serial Number"
+    },
+    "ClearFactoryVPDEntries": {
+      "inherit": "TestGroup",
+      "label": "Clear factory VPD entries",
+      "subtests": [
+        {
+          "inherit": "ExecShell",
+          "label": "Clear factory VPD entries",
+          "related_components": [
+            "test_tags.TestCategory.VPD"
+          ],
+          "args": {
+            "commands": "gooftool clear_factory_vpd_entries"
+          }
+        },
+        "RebootStep"
+      ]
+    },
+    "ClearUnknownRWVPD": {
+      "inherit": "ExecShell",
+      "label": "Clear Unknown RW VPD",
+      "related_components": [
+        "test_tags.TestCategory.VPD"
+      ],
+      "args": {
+        "commands": "gooftool clear_unknown_vpd_entries"
+      }
+    },
+    "ColdReset": {
+      "inherit": "TestGroup",
+      "label": "Cold Reset",
+      "subtests": [
+        {
+          "inherit": "ExecShell",
+          "label": "EC Cold Reset",
+          "args": {
+            "commands": "ectool reboot_ec cold at-shutdown"
+          }
+        },
+        "HaltStep"
+      ]
+    },
+    "CopyMiniOS": {
+      "pytest_name": "copy_minios",
+      "label": "Copy Minios"
+    },
+    "Cr50SMTWriteFlashInfo": {
+      "inherit": "FinalizeMLB",
+      "__comment": "Make old definition as an alias of the new definition for backward compatibility"
+    },
+    "Cr50WriteCustomlabelFlags": {
+      "inherit": "Cr50SMTWriteFlashInfo",
+      "__comment": "Make old definition as an alias of the new definition for backward compatibility"
+    },
+    "DeprovisionCBI": {
+      "inherit": "ExecShell",
+      "label": "Deprovision CBI",
+      "args": {
+        "commands": [
+          "ectool cbi set 2 0x7fffffff 4",
+          "ectool cbi remove 6"
+        ]
+      }
+    },
+    "DisableLidSwitch": {
+      "pytest_name": "exec_shell",
+      "label": "Disable Lid Switch",
+      "args": {
+        "commands": "ectool forcelidopen 1"
+      }
+    },
+    "EnableECWriteProtect": {
+      "inherit": "TestGroup",
+      "label": "Enable EC Write Protect",
+      "__comment": "This test group explicitly disables factory mode and enables EC write protection after rebooting. Run this test group before finalization if the project uses STM32 chips for EC, otherwise finalization may fail. STM32 chips are likely to be used in ARM projects, and they require an EC reboot to let write protect settings take effect. Note that this disables the factory mode in advance, usually we disable the factory mode in finalize step. So it's better to run this test as close to finalize step.",
+      "subtests": [
+        {
+          "pytest_name": "exec_shell",
+          "args": {
+            "commands": [
+              "gsctool -a -F disable | true",
+              "ectool flashprotect enable",
+              "ectool reboot_ec RO at-shutdown"
+            ]
+          }
+        },
+        "RebootStep"
+      ]
+    },
+    "EnableLidSwitch": {
+      "pytest_name": "exec_shell",
+      "label": "Enable Lid Switch",
+      "args": {
+        "commands": "ectool forcelidopen 0"
+      }
+    },
+    "ExecShell": {
+      "pytest_name": "exec_shell"
+    },
+    "ExternalDisplay": {
+      "pytest_name": "external_display",
+      "exclusive_resources": [
+        "DISPLAY"
+      ],
+      "args": {
+        "display_info": [
+          {
+            "display_label": "HDMI External Display",
+            "display_id": "HDMI",
+            "usbpd_spec": {
+              "port": 0
+            }
+          }
+        ]
+      }
+    },
+    "Fan": {
+      "pytest_name": "fan_speed",
+      "label": "Fan Speed",
+      "run_if": "constants.has_fan",
+      "disable_services": [
+        "dptf"
+      ],
+      "args": {
+        "probe_interval_secs": 0.2,
+        "target_rpm": [
+          3000,
+          4500,
+          6000
+        ],
+        "error_margin": 300
+      }
+    },
+    "FinalizeMLB": {
+      "pytest_name": "finalize",
+      "label": "Finalize MLB",
+      "run_if": "constants.factory_process != 'FULL'",
+      "args": {
+        "upload_method": "eval! 'factory_server' if constants.enable_factory_server else 'none'",
+        "mode": "eval! 'SHIMLESS_MLB' if constants.boot_to_shimless else 'MLB'",
+        "factory_process": "eval! constants.factory_process"
+      }
+    },
+    "Finish": {
+      "inherit": "Message",
+      "label": "Finish"
+    },
+    "FlashNetboot": {
+      "pytest_name": "flash_netboot"
+    },
+    "FlushTestlog": {
+      "inherit": "SyncFactoryServer",
+      "args": {
+        "sync_event_logs": false,
+        "update_toolkit": false,
+        "upload_report": false,
+        "upload_reg_codes": false,
+        "flush_testlog": true
+      }
+    },
+    "GetDeviceInfo": {
+      "inherit": "ShopfloorService",
+      "label": "Shopfloor Service (GetDeviceInfo)",
+      "args": {
+        "method": "GetDeviceInfo"
+      }
+    },
+    "HPS": {
+      "pytest_name": "hps",
+      "run_if": "device.component.has_hps",
+      "args": {
+        "timeout_secs": 3600
+      }
+    },
+    "HWButton": {
+      "inherit": "TestGroup",
+      "label": "Hardware Button",
+      "subtests": [
+        {
+          "inherit": "Button",
+          "label": "Volume Down",
+          "args": {
+            "button_key_name": "KEY_VOLUMEDOWN",
+            "button_name": "i18n! Volume Down"
+          }
+        },
+        {
+          "inherit": "Button",
+          "label": "Volume Up",
+          "args": {
+            "button_key_name": "KEY_VOLUMEUP",
+            "button_name": "i18n! Volume Up"
+          }
+        },
+        {
+          "inherit": "Button",
+          "label": "Power Button",
+          "args": {
+            "button_key_name": "KEY_POWER",
+            "button_name": "i18n! Power Button"
+          }
+        }
+      ]
+    },
+    "Idle": {
+      "pytest_name": "nop",
+      "label": "Idle"
+    },
+    "Keyboard": {
+      "pytest_name": "keyboard",
+      "args": {
+        "allow_multi_keys": true,
+        "has_numpad": "eval! device.component.has_numeric_pad or False"
+      }
+    },
+    "KeyboardBacklight": {
+      "pytest_name": "keyboard_backlight",
+      "run_if": "not constants.has_device_data or device.component.has_keyboard_backlight"
+    },
+    "LED": {
+      "pytest_name": "led",
+      "exclusive_resources": [
+        "LED"
+      ],
+      "args": {
+        "challenge": true
+      }
+    },
+    "LidSwitch": {
+      "pytest_name": "lid_switch"
+    },
+    "LoadECButtonDriver": {
+      "pytest_name": "exec_shell",
+      "label": "Load EC Button Driver",
+      "args": {
+        "commands": "sleep 3 && echo GOOG0007:00 > /sys/bus/platform/drivers/cros-ec-keyb/bind || true"
+      }
+    },
+    "Message": {
+      "pytest_name": "message",
+      "allow_reboot": true
+    },
+    "ModelSKU": {
+      "pytest_name": "model_sku",
+      "label": "Model and SKU",
+      "action_on_failure": "STOP",
+      "args": {
+        "config_name": "model_sku"
+      }
+    },
+    "Mouse": {
+      "pytest_name": "mouse"
+    },
+    "NotifyOverlordTrackConnection": {
+      "pytest_name": "exec_shell",
+      "label": "Notify Overlord to track connection",
+      "args": {
+        "commands": "ghost --track-connection y"
+      }
+    },
+    "NotifyOverlordUntrackConnection": {
+      "pytest_name": "exec_shell",
+      "label": "Notify Overlord not to track connection",
+      "args": {
+        "commands": "ghost --track-connection n"
+      }
+    },
+    "PartitionTable": {
+      "pytest_name": "partition_table"
+    },
+    "Placeholder": {
+      "pytest_name": "nop",
+      "label": "Placeholder"
+    },
+    "Probe": {
+      "pytest_name": "probe.probe",
+      "label": "Probe Hardware",
+      "args": {
+        "config_file": "probe.json"
+      }
+    },
+    "ProximitySensor": {
+      "pytest_name": "proximity_sensor",
+      "run_if": "not constants.has_device_data or device.component.has_proximity_sensor",
+      "disable_services": [
+        "powerd"
+      ]
+    },
+    "ReSignReleaseKernel": {
+      "pytest_name": "update_kernel",
+      "run_if": "constants.phase != 'PVT' and constants.grt.re_sign_release_kernel",
+      "args": {
+        "to_release": true
+      }
+    },
+    "ReadDeviceDataFromCrosConfig": {
+      "pytest_name": "read_device_data_from_cros_config"
+    },
+    "ReadDeviceDataFromVPD": {
+      "pytest_name": "read_device_data_from_vpd"
+    },
+    "RecoveryButtonGroup": {
+      "label": "Recovery Button Group",
+      "subtests": [
+        "UnloadECButtonDriver",
+        {
+          "inherit": "Button",
+          "label": "Recovery Button",
+          "args": {
+            "button_key_name": "ectool:-H1_EC_RECOVERY_BTN_ODL",
+            "button_name": "i18n! Recovery Button"
+          }
+        },
+        "LoadECButtonDriver"
+      ]
+    },
+    "RemovableStorage": {
+      "pytest_name": "removable_storage",
+      "args": {
+        "block_size": 524288,
+        "perform_random_test": false,
+        "perform_sequential_test": true,
+        "sequential_block_count": 8
+      }
+    },
+    "SDPerformance": {
+      "inherit": "RemovableStorage",
+      "label": "SD Performance",
+      "related_components": [
+        "test_tags.TestCategory.CARD_READER"
+      ],
+      "run_if": "constants.sd.sysfs_path != ''",
+      "args": {
+        "media": "SD",
+        "sysfs_path": "eval! constants.sd.sysfs_path",
+        "timeout_secs": 60
+      }
+    },
+    "Scan": {
+      "pytest_name": "scan"
+    },
+    "SetWidevineKeybox": {
+      "pytest_name": "provision_drm_key",
+      "label": "Set Widevine Keybox",
+      "run_if": "constants.has_keybox"
+    },
+    "SetWidevineKeyboxGroup": {
+      "label": "Widevine Keybox provisioning Test Group",
+      "run_if": "constants.has_keybox",
+      "subtests": [
+        {
+          "inherit": "ExecShell",
+          "label": "Reset Widevine keyboxes",
+          "args": {
+            "commands": "vpd -d widevine_keybox; rm /var/lib/oemcrypto/wrapped_amd_keybox || true"
+          }
+        },
+        "RebootStep",
+        "SetWidevineKeybox"
+      ]
+    },
+    "ShopfloorNotifyEnd": {
+      "inherit": "ShopfloorService",
+      "label": "Shopfloor Service (NotifyEnd)",
+      "args": {
+        "method": "NotifyEnd",
+        "args": [
+          "eval! locals.station"
+        ]
+      }
+    },
+    "ShopfloorNotifyStart": {
+      "inherit": "ShopfloorService",
+      "label": "Shopfloor Service (NotifyStart)",
+      "args": {
+        "method": "NotifyStart",
+        "args": [
+          "eval! locals.station"
+        ]
+      }
+    },
+    "ShopfloorService": {
+      "pytest_name": "shopfloor_service",
+      "run_if": "constants.enable_factory_server"
+    },
+    "SpatialSensorCalibration": {
+      "pytest_name": "spatial_sensor_calibration"
+    },
+    "Start": {
+      "pytest_name": "start",
+      "allow_reboot": true
+    },
+    "StationEnd": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "StationEndSyncFactoryServer",
+        "Barrier",
+        "ShopfloorNotifyEnd",
+        "Barrier",
+        "WriteDeviceDataToVPD"
+      ]
+    },
+    "StationEndSyncFactoryServer": {
+      "inherit": "SyncFactoryServerUploadReport",
+      "args": {
+        "upload_report": "eval! locals.station_end_upload_report"
+      }
+    },
+    "StationStart": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "SyncFactoryServer",
+        "Barrier",
+        "ShopfloorNotifyStart"
+      ]
+    },
+    "SuspendResume": {
+      "pytest_name": "suspend_resume",
+      "exclusive_resources": [
+        "POWER"
+      ]
+    },
+    "SuspendStress": {
+      "pytest_name": "suspend_stress",
+      "exclusive_resources": [
+        "POWER"
+      ]
+    },
+    "SyncFactoryServer": {
+      "pytest_name": "sync_factory_server",
+      "run_if": "constants.enable_factory_server",
+      "args": {
+        "server_url": "eval! constants.default_factory_server_url"
+      }
+    },
+    "SyncFactoryServerUploadReport": {
+      "inherit": "SyncFactoryServer",
+      "args": {
+        "upload_report": true,
+        "report_stage": "eval! locals.station"
+      }
+    },
+    "TBTLoopback": {
+      "pytest_name": "thunderbolt_loopback",
+      "run_if": "False"
+    },
+    "ThermalSensors": {
+      "pytest_name": "thermal_sensors"
+    },
+    "ThermalSlope": {
+      "pytest_name": "thermal_slope"
+    },
+    "URandom": {
+      "pytest_name": "urandom",
+      "label": "Random Number Generation"
+    },
+    "USBPerformance": {
+      "inherit": "RemovableStorage",
+      "label": "USB Performance",
+      "related_components": [
+        "test_tags.TestCategory.USB_INTEGRATED"
+      ],
+      "args": {
+        "media": "USB"
+      }
+    },
+    "USBTypeAManualLeft": {
+      "inherit": "TestGroup",
+      "label": "Manual Test Left USB TypeA",
+      "subtests": [
+        {
+          "inherit": "USBPerformance",
+          "label": "USB2 TypeA Performance",
+          "run_if": "constants.typea_usb.left.usb2_sysfs_path != ''",
+          "args": {
+            "sysfs_path": "eval! constants.typea_usb.left.usb2_sysfs_path"
+          }
+        },
+        {
+          "inherit": "USBPerformance",
+          "label": "USB3 TypeA Performance",
+          "run_if": "constants.typea_usb.left.usb3_sysfs_path != ''",
+          "args": {
+            "sysfs_path": "eval! constants.typea_usb.left.usb3_sysfs_path"
+          }
+        }
+      ]
+    },
+    "USBTypeAManualRight": {
+      "inherit": "TestGroup",
+      "label": "Manual Test Right USB TypeA",
+      "subtests": [
+        {
+          "inherit": "USBPerformance",
+          "label": "USB2 TypeA Performance",
+          "run_if": "constants.typea_usb.right.usb2_sysfs_path != ''",
+          "args": {
+            "sysfs_path": "eval! constants.typea_usb.right.usb2_sysfs_path"
+          }
+        },
+        {
+          "inherit": "USBPerformance",
+          "label": "USB3 TypeA Performance",
+          "run_if": "constants.typea_usb.right.usb3_sysfs_path != ''",
+          "args": {
+            "sysfs_path": "eval! constants.typea_usb.right.usb3_sysfs_path"
+          }
+        }
+      ]
+    },
+    "USBTypeAManualTest": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "USBTypeAManualLeft",
+        "USBTypeAManualRight"
+      ]
+    },
+    "USBTypeATest": {
+      "inherit": "USBTypeAManualTest"
+    },
+    "USBTypeCManualBase": {
+      "inherit": "TestGroup",
+      "subtests": [
+        {
+          "inherit": "USBPerformance",
+          "label": "USB3 CC1 Performance",
+          "args": {
+            "sysfs_path": "eval! locals.usb.usb3_sysfs_path",
+            "usbpd_port_polarity": [
+              "eval! locals.usb.usbpd_id",
+              1
+            ]
+          }
+        },
+        {
+          "inherit": "USBPerformance",
+          "label": "USB3 CC2 Performance",
+          "args": {
+            "sysfs_path": "eval! locals.usb.usb3_sysfs_path",
+            "usbpd_port_polarity": [
+              "eval! locals.usb.usbpd_id",
+              2
+            ]
+          }
+        },
+        {
+          "inherit": "USBPerformance",
+          "label": "USB2 Performance",
+          "args": {
+            "sysfs_path": "eval! locals.usb.usb2_sysfs_path"
+          }
+        },
+        {
+          "inherit": "TBTLoopback",
+          "args": {
+            "controller_port": "eval! locals.usb.tbt_controller_port",
+            "usbpd_spec": {
+              "port": "eval! locals.usb.usbpd_id"
+            }
+          }
+        },
+        "USBTypeCManualChargeItems",
+        "USBTypeCManualExternalDisplay",
+        "Barrier"
+      ]
+    },
+    "USBTypeCManualCharge": {
+      "inherit": "ChargeDischargeCurrent",
+      "args": {
+        "usbpd_info": [
+          "eval! locals.usb.usbpd_id",
+          "eval! int(locals.voltage * 1000 * 0.7)",
+          "eval! int(locals.voltage * 1000 * 2.1)"
+        ],
+        "usbpd_prompt": "eval! locals.usb_label"
+      }
+    },
+    "USBTypeCManualChargeItems": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        {
+          "inherit": "USBTypeCManualCharge",
+          "label": "20V Charging",
+          "locals": {
+            "voltage": 20
+          }
+        },
+        {
+          "inherit": "USBTypeCManualCharge",
+          "label": "5V Charging",
+          "locals": {
+            "voltage": 5
+          }
+        }
+      ]
+    },
+    "USBTypeCManualExternalDisplay": {
+      "inherit": "ExternalDisplay",
+      "label": "USB3 External Display Test",
+      "args": {
+        "display_info": [
+          "eval! locals.usb.display_info"
+        ]
+      }
+    },
+    "USBTypeCManualLeft": {
+      "inherit": "USBTypeCManualBase",
+      "label": "Manual Test Left USB TypeC",
+      "locals": {
+        "usb": "eval! constants.typec_usb.left",
+        "usb_label": "i18n! Left USB TypeC"
+      }
+    },
+    "USBTypeCManualRight": {
+      "inherit": "USBTypeCManualBase",
+      "label": "Manual Test Right USB TypeC",
+      "locals": {
+        "usb": "eval! constants.typec_usb.right",
+        "usb_label": "i18n! Right USB TypeC"
+      }
+    },
+    "USBTypeCManualTest": {
+      "inherit": "FlattenGroup",
+      "subtests": [
+        "USBTypeCManualLeft",
+        "USBTypeCManualRight"
+      ]
+    },
+    "USBTypeCTest": {
+      "inherit": "USBTypeCManualTest"
+    },
+    "UnloadECButtonDriver": {
+      "pytest_name": "exec_shell",
+      "label": "Unload EC Button Driver",
+      "args": {
+        "commands": "echo GOOG0007:00 > /sys/bus/platform/drivers/cros-ec-keyb/unbind || true"
+      }
+    },
+    "UpdateCBI": {
+      "pytest_name": "update_cbi",
+      "label": "Update CBI",
+      "args": {
+        "cbi_data_names": [
+          "SKU_ID",
+          "DRAM_PART_NUM",
+          "PCB_SUPPLIER",
+          "SSFC"
+        ]
+      }
+    },
+    "UpdateDeviceData": {
+      "pytest_name": "update_device_data"
+    },
+    "UpdateFirmware": {
+      "label": "Update Firmware",
+      "subtests": [
+        {
+          "pytest_name": "update_firmware"
+        },
+        "Barrier",
+        {
+          "inherit": "ShutdownStep",
+          "label": "Reboot",
+          "args": {
+            "operation": "eval! constants.update_firmware.reboot_type"
+          }
+        }
+      ]
+    },
+    "UpdateSKUID": {
+      "pytest_name": "update_cbi",
+      "label": "Update SKU ID",
+      "args": {
+        "cbi_data_names": [
+          "SKU_ID"
+        ]
+      }
+    },
+    "UploadRegCodes": {
+      "inherit": "SyncFactoryServer",
+      "label": "Upload Reg (ECHO) Codes to activate",
+      "args": {
+        "sync_event_logs": false,
+        "sync_time": true,
+        "update_toolkit": false,
+        "upload_report": false,
+        "upload_reg_codes": true,
+        "flush_testlog": false
+      }
+    },
+    "UploadSerialNumberForAuditing": {
+      "inherit": "SyncFactoryServer",
+      "label": "Upload Serial Number for auditing",
+      "args": {
+        "sync_event_logs": false,
+        "sync_time": true,
+        "update_toolkit": false,
+        "upload_report": false,
+        "upload_reg_codes": false,
+        "upload_sn": true,
+        "flush_testlog": false
+      }
+    },
+    "UploadZeroTouchIds": {
+      "inherit": "SyncFactoryServer",
+      "label": "Upload Zero Touch Ids",
+      "run_if": "constants.grt.enable_zero_touch and constants.grt.collect_zero_touch_ids",
+      "args": {
+        "sync_event_logs": false,
+        "sync_time": true,
+        "update_toolkit": false,
+        "upload_report": false,
+        "upload_reg_codes": false,
+        "upload_zero_touch_ids": true,
+        "flush_testlog": false
+      }
+    },
+    "VerifyWidevineKeybox": {
+      "pytest_name": "verify_keybox",
+      "label": "Verify Widevine Keybox",
+      "run_if": "constants.has_keybox"
+    },
+    "WebGLAquarium": {
+      "pytest_name": "webgl_aquarium"
+    },
+    "WirelessCharger": {
+      "pytest_name": "wireless_charge",
+      "label": "Wireless Charger",
+      "run_if": "not constants.has_device_data or device.component.has_wireless_charger",
+      "args": {
+        "occupy_instruction": "i18n! Attach peripheral to charging port",
+        "release_instruction": "i18n! Remove peripheral from charging port"
+      }
+    },
+    "WriteDeviceDataToVPD": {
+      "pytest_name": "write_device_data_to_vpd"
+    },
+    "WriteHWID": {
+      "pytest_name": "hwid",
+      "label": "Write HWID",
+      "args": {
+        "enable_factory_server": "eval! constants.enable_factory_server",
+        "run_vpd": "eval! constants.hwid_need_vpd",
+        "rma_mode": "eval! constants.factory_process == 'RMA'"
+      }
+    },
+    "WriteProtectSwitch": {
+      "pytest_name": "write_protect_switch"
+    },
+    "WriteRMAHWID": {
+      "inherit": "WriteHWID",
+      "label": "Write RMA HWID",
+      "args": {
+        "rma_mode": true
+      }
+    },
+    "WriteTestHWID": {
+      "pytest_name": "exec_shell",
+      "label": "Write Test HWID",
+      "related_components": [
+        "test_tags.TestCategory.HARDWARE_ID"
+      ],
+      "args": {
+        "commands": [
+          "hwid read",
+          "hwid write \"$(hwid generate_test)\""
+        ]
+      }
+    }
+  }
+}

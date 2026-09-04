@@ -1,0 +1,112 @@
+{
+  "profile": {
+    "json_config": ":test_config.main",
+    "inherit_roots": "test_suite,test_case",
+    "test_args": {
+      "dp_lock": "$python.threading.Lock",
+      "pd_src_lock": "$python.threading.Lock"
+    }
+  },
+  "0": {
+    "profile": {
+      "test_seq": [
+        "normal"
+      ],
+      "port_id": 0,
+      "port_path": "3-6:1.0",
+      "com": "COM0",
+      "auto_loop": false
+    },
+    "normal": [
+      {
+        "args": {
+          "UsbSpeed": "Gen2",
+          "PdMode": "sink",
+          "Voltage(mv)": 5000,
+          "Current(ma)": 1000
+        },
+        "inherit": ":test_case.tbt01GenericCaseSet.PrepareTest"
+      },
+      {
+        "args": {
+          "IsSkipTest": false
+        },
+        "inherit": ":test_case.tbt01SwitchCaseSet.SwitchSs"
+      },
+      {
+        "args": {
+          "IsSkipTest": false
+        },
+        "inherit": ":test_case.tbt01UsbPowerCaseSet.VbusTest"
+      },
+      {
+        "args": {
+          "IsSkipTest": false,
+          "LoadPower": "5V1A"
+        },
+        "inherit": ":test_case.tbt01UsbPowerCaseSet.LoadTest"
+      },
+      {
+        "args": {
+          "IsSkipTest": false,
+          "ReadSpeed(M/s)": 500,
+          "WriteSpeed(M/s)": 500
+        },
+        "inherit": ":test_case.tbt01UsbTrasCaseSet.Usb3SpeedTest"
+      },
+      {
+        "args": {
+          "IsSkipTest": false,
+          "DpLanes": "dp4Lanes",
+          "PdMode": "pdSource",
+          "SwitchSide": "changeSide"
+        },
+        "inherit": ":test_case.tbt01SwitchCaseSet.SwitchDpPd"
+      },
+      {
+        "args": {
+          "IsSkipTest": false,
+          "Resolution": "4K",
+          "Fps": "60",
+          "DpLanes": "dp4Lanes",
+          "PdMode": "pdSource"
+        },
+        "inherit": ":test_case.tbt01DpPdCaseSet.VideoTest"
+      },
+      {
+        "args": {
+          "IsSkipTest": false,
+          "TestVoltage": true,
+          "MaxVoltage(mv)": 22000,
+          "MinVoltage(mv)": 17000,
+          "TestCurrent": true,
+          "MaxCurrent(ma)": 6000,
+          "MinCurrent(ma)": 100
+        },
+        "inherit": ":test_case.tbt01DpPdCaseSet.PdTest"
+      },
+      {
+        "args": {
+          "IsSkipTest": false
+        },
+        "inherit": ":test_case.tbt01SwitchCaseSet.SwitchSs"
+      },
+      {
+        "args": {
+          "IsSkipTest": false,
+          "ReadSpeed(M/s)": 500,
+          "WriteSpeed(M/s)": 500
+        },
+        "inherit": ":test_case.tbt01UsbTrasCaseSet.Usb3SpeedTest"
+      },
+      {
+        "args": {
+          "IsSkipTest": false,
+          "Reset": true,
+          "FindDevice": false
+        },
+        "inherit": ":test_case.tbt01GenericCaseSet.FinishTest"
+      }
+    ]
+  }
+}

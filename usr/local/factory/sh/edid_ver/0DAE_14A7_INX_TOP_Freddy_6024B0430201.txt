@@ -1,0 +1,5 @@
+Supplier : 0DAE
+PID : 14A7
+TCON FW ver. : A1
+TOP FW ver. : A1
+A1A1

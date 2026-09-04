@@ -1,0 +1,434 @@
+{
+  "profile": {
+    "using_config": ":test_config.main",
+    "using_command_set": ":command.tbt01CommandSet"
+  },
+
+  "tbt01GenericCaseSet": {
+    "profile":{
+      "module_name": "tbt01generic"
+    },
+    "PrepareTest": {
+      "procedures": {
+        "set_test_state": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setTestState",
+            "!.send.sections.testState.bytes": "Testing"
+          },
+          "auto_proceed": true
+        },
+        "set_reset_delay": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setSysDelay",
+            "!.send.sections.delayType.bytes": "resetDelay",
+            "!.send.sections.delay.bytes": ":test_case.profile.using_config.reset_delay"
+          },
+          "auto_proceed": true
+        },
+        "set_switch_delay": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setSysDelay",
+            "!.send.sections.delayType.bytes": "switchDelay",
+            "!.send.sections.delay.bytes": "$profile.using_config.switch_delay"
+          },
+          "auto_proceed": true
+        },
+        "set_response_delay": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setSysDelay",
+            "!.send.sections.delayType.bytes": "responseDelay",
+            "!.send.sections.delay.bytes": "$profile.using_config.response_delay"
+          },
+          "auto_proceed": true
+        },
+        "set_thunderbolt_wait_switch_timeout": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setSysDelay",
+            "!.send.sections.delayType.bytes": "thunderboltDelay",
+            "!.send.sections.delay.bytes": "$profile.using_config.tb_wait_switch_timeout"
+          },
+          "auto_proceed": true
+        },
+        "check_usb3_gen": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getUsb3Generation"
+          }
+        },
+        "set_usb3_gen": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setUsb3Generation"
+          },
+          "auto_proceed": true
+        },
+        "delay": {
+        },
+        "set_pd_capability": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setPdCap"
+          },
+          "auto_proceed": true
+        }
+      }
+    },
+    "SetDeviceDelay": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "set_device_delay": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setSysDelay"
+          },
+          "auto_proceed": true
+        }
+      }
+    },
+    "SetPdCapability": {
+      "procedures": {
+        "set_pd_capability": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setPdCap"
+          },
+          "auto_proceed": true
+        }
+      }
+    },
+    "ResetDevice": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "reset_device": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.reset"
+          },
+          "auto_proceed": true
+        },
+        "find_device": {
+          "FindDevice": "?<FindDevice;bool>"
+        }
+      }
+    },
+    "FinishTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "set_test_state": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.setTestState",
+            "!.send.sections.testState.bytes": "Idle"
+          },
+          "auto_proceed": true
+        },
+        "is_need_reset": {
+          "is_reset": "?<Reset;bool;1>"
+        },
+        "reset_device": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.reset"
+          },
+          "auto_proceed": true
+        },
+        "find_device": {
+          "FindDevice": "?<FindDevice;bool;0>"
+        }
+      }
+    }
+  },
+  "tbt01UsbPowerCaseSet": {
+    "profile":{
+      "module_name": "tbt01usbpower"
+    },
+    "VbusTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "vbus_test": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getVbusCur"
+          },
+          "timeout": 10,
+          "retry_delay": 1000
+        }
+      }
+    },
+    "LoadTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "open_load": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.loadCtrl"
+          },
+          "auto_proceed": true,
+          "timeout": 5,
+          "retry_delay": "$profile.using_config.retry_delay"
+        },
+        "load_test": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getVbusCur"
+          },
+          "timeout": 10,
+          "retry_delay": "$profile.using_config.retry_delay"
+        },
+        "close_load": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.loadCtrl",
+            "!.send.sections.loadPower.bytes": "off"
+          },
+          "auto_proceed": true
+        }
+      }
+    }
+  },
+  "tbt01UsbTrasCaseSet": {
+    "profile":{
+      "module_name": "tbt01usbtransfer"
+    },
+    "Usb3ConnectTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "connect_usb3": {
+          "timeout": 20,
+          "retry_delay": "$profile.using_config.retry_delay"
+        },
+        "reset_usb3": {
+          "reset_u3_per_retry": "$profile.using_config.reset_u3_per_retry",
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.usb3Reset"
+          }
+        }
+      }
+    },
+    "Usb3SpeedTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "connect_usb3": {
+          "timeout": 20,
+          "retry_delay": "$profile.using_config.retry_delay"
+        },
+        "reset_usb3": {
+          "reset_u3_per_retry": "$profile.using_config.reset_u3_per_retry",
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.usb3Reset"
+          }
+        },
+        "read": {
+          "timeout": 10,
+          "retry_delay": "$profile.using_config.retry_delay",
+          "read_speed_min": "?<ReadSpeed(M/s);int;:test_config.main.u3_read_speed;0,2000,20>"
+        },
+        "write": {
+          "timeout": 10,
+          "retry_delay": "$profile.using_config.retry_delay",
+          "write_speed_min": "?<WriteSpeed(M/s);int;:test_config.main.u3_write_speed;0,2000,20>"
+        }
+      }
+    },
+    "thunderboltConnectTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "connect_thunderbolt": {
+          "timeout": 30,
+          "retry_delay": "$profile.using_config.retry_delay"
+        },
+        "reset_thunderbolt": {
+          "reset_tb_per_retry": "$profile.using_config.reset_tb_per_retry",
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.switchThunderbolt",
+            "!.send.sections.switchSide.bytes": "noChangeSide"
+          }
+        }
+      }
+    },
+    "thunderboltSpeedTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "connect_thunderbolt": {
+          "timeout": 30,
+          "retry_delay": "$profile.using_config.retry_delay"
+        },
+        "reset_thunderbolt": {
+          "reset_tb_per_retry": "$profile.using_config.reset_tb_per_retry",
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.switchThunderbolt",
+            "!.send.sections.switchSide.bytes": "noChangeSide"
+          }
+        },
+        "read": {
+          "timeout": 10,
+          "retry_delay": "$profile.using_config.retry_delay",
+          "read_speed_min": "?<ReadSpeed(M/s);int;:test_config.main.u3_read_speed;0,2000,20>"
+        },
+        "write": {
+          "timeout": 10,
+          "retry_delay": "$profile.using_config.retry_delay",
+          "write_speed_min": "?<WriteSpeed(M/s);int;:test_config.main.u3_write_speed;0,2000,20>"
+        }
+      }
+    }
+  },
+  "tbt01DpPdCaseSet": {
+    "profile":{
+      "module_name": "tbt01dppdtest"
+    },
+    "options": {
+      "Resolution": {
+        "2K": "1920*1080",
+        "4K": "3840*2160",
+        "8K": "7680*4320",
+        "None": null
+      },
+      "Fps": {
+        "30": 30,
+        "60": 60,
+        "None": null
+      }
+    },
+    "VideoTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "video_test": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getDpVideoResult"
+          },
+          "timeout": 30,
+          "retry_delay": 1000,
+          "resolution": "....options.Resolution.?",
+          "fps": "....options.Fps.?"
+        },
+        "reset_pd_dp": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.switchPdDp",
+            "!.send.sections.switchSide.bytes": "noChangeSide"
+          },
+          "timeout": "$profile.using_config.test_timeout",
+          "retry_delay": "$profile.using_config.refind_delay",
+          "auto_proceed": true,
+          "auto_goto": "find_device"
+        },
+        "find_device": {
+          "timeout": "$profile.using_config.refind_timeout",
+          "retry_delay": "$profile.using_config.refind_delay"
+        }
+
+      }
+    },
+    "AudioTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "prepare_audio": {
+          "timeout": 5,
+          "retry_delay": "$profile.using_config.retry_delay"
+        },
+        "audio_test": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getDpAudioResult"
+          },
+          "timeout": 5,
+          "retry_delay": "$profile.using_config.retry_delay"
+        }
+      }
+    },
+    "PdConnectTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "pd_connect": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getPdConnectStatus"
+          },
+          "timeout": 15,
+          "retry_delay": "$profile.using_config.retry_delay"
+        }
+      }
+    },
+    "PdTest": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "power_test": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getPdTestResult"
+          },
+          "timeout": 15,
+          "retry_delay": "$profile.using_config.retry_delay",
+          "test_voltage": "?<TestVoltage;bool>",
+          "max_voltage": "?<MaxVoltage(mv);int;:test_config.main.pd_voltage_max;0,25000,1000>",
+          "min_voltage": "?<MinVoltage(mv);int;:test_config.main.pd_voltage_min;0,25000,1000>",
+          "test_current": "?<TestCurrent;bool>",
+          "max_current": "?<MaxCurrent(ma);int;:test_config.main.pd_current_max;0,7000,500>",
+          "min_current": "?<MinCurrent(ma);int;:test_config.main.pd_current_min;0,7000,500>"
+        }
+      }
+    },
+    "PdTestByIni": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "power_test": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.getPdTestResult"
+          },
+          "timeout": 15,
+          "retry_delay": "$profile.using_config.retry_delay"
+        }
+      }
+    }
+  },
+  "tbt01SwitchCaseSet": {
+    "profile":{
+      "module_name": "tbt01switch"
+    },
+    "SwitchSs": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "is_need_to_switch": {
+        },
+        "switch_ss": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.switchUsb3",
+            "!.send.sections.switchSide.bytes": "changeSide"
+          },
+          "timeout": "$profile.using_config.test_timeout",
+          "retry_delay": "$profile.using_config.retry_delay",
+          "auto_proceed": true
+        },
+        "find_device": {
+          "timeout": "$profile.using_config.refind_timeout",
+          "retry_delay": "$profile.using_config.refind_delay"
+        }
+      }
+    },
+    "SwitchDpPd": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "switch_select": {
+        },
+        "switch_pd_dp": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.switchPdDp"
+          },
+          "timeout": "$profile.using_config.test_timeout",
+          "retry_delay": "$profile.using_config.refind_delay",
+          "auto_proceed": true,
+          "auto_goto": "find_device"
+        },
+        "find_device": {
+          "timeout": "$profile.using_config.refind_timeout",
+          "retry_delay": "$profile.using_config.refind_delay"
+        }
+      }
+    },
+    "SwitchThunderbolt": {
+      "is_skip_case": "?<IsSkipTest;bool;false>",
+      "procedures": {
+        "switch_select": {
+        },
+        "switch_thunderbolt": {
+          "json_command": {
+            "inherit": ":test_case.profile.using_command_set.switchThunderbolt"
+          },
+          "timeout": "$profile.using_config.refind_timeout",
+          "retry_delay": "$profile.using_config.refind_delay",
+          "auto_proceed": true,
+          "auto_goto": "find_device"
+        },
+        "find_device": {
+          "timeout": "\\e$profile.using_config.tb_wait_switch_timeout+5000",
+          "retry_delay": "$profile.using_config.refind_delay"
+        }
+      }
+    }
+  }
+}

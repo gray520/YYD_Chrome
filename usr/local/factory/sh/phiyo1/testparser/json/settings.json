@@ -1,0 +1,173 @@
+{
+  "profile": {
+    "default_path_settings": {
+      "config": "%apppath%/ini",
+      "log": "%apppath%/log",
+      "json": "%apppath%/json"
+    },
+    "default_json_settings": {
+      "file_name": {
+        "command_format": "command_format",
+        "commands": "command",
+        "test_case": "test_case",
+        "test_config": "test_config",
+        "port_setting": "port_settings",
+        "info_gen_config": "info_generator_config",
+        "tester": "tester"
+      }
+    }
+  },
+  "tc2605Settings": {
+    "proj_name": "tc2605",
+    "gui": {
+      "gui_module_name": "tc2605maindialog",
+      "gui_class_name": "Tc2605MainWindow",
+      "gui_proxy_module_name": "tc2605guiproxy",
+      "gui_proxy_class_name": "Tc2605GuiProxy",
+      "main_dialog_title": "TypeC2605 Tester",
+      "list_with_hide_button": "",
+      "tab_page": "",
+      "top_widgets": "",
+      "table_test_flow": "",
+      "table_detail_info": ""
+    },
+    "path": ":settings.profile.default_path_settings",
+    "json": ":settings.profile.default_json_settings",
+    "log": {
+      "debug_output": true
+    }
+  },
+
+  "tbt02Settings": {
+    "proj_name": "tbt02",
+    "gui": {
+      "gui_module_name": "tbt02user.tbt02usermainwindow",
+      "gui_class_name": "TBT02UserMainWindow",
+      "gui_proxy_module_name": "tbt02user.tbt02userdialogproxy",
+      "gui_proxy_class_name": "TBT02UserDialogProxy",
+      "main_dialog_title": "TBT02 Tester",
+      "list_with_hide_button": "",
+      "tab_page": "",
+      "top_widgets": "",
+      "table_test_flow": "",
+      "table_detail_info": ""
+    },
+    "path": ":settings.profile.default_path_settings",
+    "json": ":settings.profile.default_json_settings",
+    "log": {
+      "debug_output": true
+    }
+  },
+
+  "tbt01Settings": {
+    "proj_name": "tbt01",
+    "gui": {
+      "gui_module_name": "tbt01maindialog",
+      "gui_class_name": "TBT01MainWindow",
+      "gui_proxy_module_name": "tbt01guiproxy",
+      "gui_proxy_class_name": "TBT01GuiProxy",
+      "main_dialog_title": "TBT01 Tester",
+      "list_with_hide_button": "",
+      "tab_page": "",
+      "top_widgets": "",
+      "table_test_flow": "",
+      "table_detail_info": ""
+    },
+    "path": ":settings.profile.default_path_settings",
+    "json": ":settings.profile.default_json_settings",
+    "log": {
+      "debug_output": false
+    }
+  },
+
+  "usb3214Settings": {
+    "proj_name": "usb3214",
+    "gui": {
+      "gui_module_name": "usb3214maindialog",
+      "gui_class_name": "Usb3214MainWindow",
+      "gui_proxy_module_name": "usb3214guiproxy",
+      "gui_proxy_class_name": "Usb3214GuiProxy",
+      "main_dialog_title": "USB3214 Tester",
+      "list_with_hide_button": "",
+      "tab_page": "",
+      "top_widgets": "",
+      "table_test_flow": "",
+      "table_detail_info": ""
+    },
+    "path": ":settings.profile.default_path_settings",
+    "json": ":settings.profile.default_json_settings",
+    "log": {
+      "debug_output": true
+    }
+  },
+
+  "dhvt2200Settings": {
+    "proj_name": "dhvt2200",
+    "gui": {
+      "gui_module_name": "dhvt2200.dhvt2200maindialog",
+      "gui_class_name": "Dhvt2200MainWindow",
+      "gui_proxy_module_name": "dhvt2200.dhvt2200guiproxy",
+      "gui_proxy_class_name": "Dhvt2200GuiProxy",
+      "main_dialog_title": "DHVT2200 Tester",
+      "list_with_hide_button": "",
+      "tab_page": "",
+      "top_widgets": "",
+      "table_test_flow": "",
+      "table_detail_info": ""
+    },
+    "path": {
+      "config": "%apppath%/ini/dhvt2200",
+      "log": "%apppath%/log/dhvt2200",
+      "json": "%apppath%/json/dhvt2200"
+    },
+    "json": {
+      "file_name": {
+        "command_format": "command_format",
+        "commands": "command",
+        "test_case": "test_case",
+        "test_config": "test_config",
+        "port_setting": "port_settings",
+        "info_gen_config": "info_generator_config",
+        "tester": "tester"
+      }
+    },
+    "log": {
+      "debug_output": true
+    }
+  },
+
+  "vit8Settings": {
+    "proj_name": "vit8",
+    "gui": {
+      "gui_module_name": "vit8.vit8maindialog",
+      "gui_class_name": "Vit8MainWindow",
+      "gui_proxy_module_name": "vit8.vit8guiproxy",
+      "gui_proxy_class_name": "Vit8GuiProxy",
+      "main_dialog_title": "Programmable 8K Video Pattern Generator Console %appver%",
+      "list_with_hide_button": "",
+      "tab_page": "",
+      "top_widgets": "",
+      "table_test_flow": "",
+      "table_detail_info": ""
+    },
+    "path": {
+      "config": "%apppath%/ini/vit8",
+      "log": "%apppath%/log/vit8",
+      "json": "%apppath%/json/vit8"
+    },
+    "json": {
+      "file_name": {
+        "command_format": "command_format",
+        "commands": "command",
+        "test_case": "test_case",
+        "test_config": "test_config",
+        "port_setting": "port_settings",
+        "info_gen_config": "info_generator_config",
+        "tester": "tester"
+      }
+    }
+  },
+  "log": {
+    "debug_output": false
+  }
+}

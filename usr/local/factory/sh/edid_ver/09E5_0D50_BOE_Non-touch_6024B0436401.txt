@@ -1,0 +1,6 @@
+Supplier : 09E5
+PID : 0D50
+TCON FW ver. : A1
+TOP FW ver. : FF
+A1FF
+

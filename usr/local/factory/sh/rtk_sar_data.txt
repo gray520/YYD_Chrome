@@ -1,0 +1,23 @@
+1. non-tablet-mode-power-table-rtw
+(a) cat limit-2g==78
+(b) cat limit-5g-1==76
+(c) cat limit-5g-3==76
+(d) cat limit-5g-4==76
+
+2. tablet-mode-power-table-rtw
+(a) cat limit-2g==64
+(b) cat limit-5g-1==54
+(c) cat limit-5g-3==54
+(d) cat limit-5g-4==54
+
+3. geo-offsets-fcc
+(a) cat offset-2g==0
+(b) cat offset-5g==0
+
+4. geo-offsets-eu
+(a) cat offset-2g==0
+(b) cat offset-5g==18
+
+5. geo-offsets-rest-of-world
+(a) cat offset-2g==0
+(b) cat offset-5g==18

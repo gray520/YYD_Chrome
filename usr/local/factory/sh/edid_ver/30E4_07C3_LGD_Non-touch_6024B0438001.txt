@@ -1,0 +1,6 @@
+Supplier : 30E4
+PID : 07C3
+TCON FW ver. : A1
+TOP FW ver. : FF
+A1FF
+

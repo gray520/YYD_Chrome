@@ -1,0 +1,57 @@
+{
+    "manifest_version": 1,
+    "ec_version": "kaladin-ish-5_4_1-16463.2.178",
+    "component_list": [
+        {
+            "component_type": "accel",
+            "component_name": "bosch,bma422",
+            "i2c": {
+                "port": 0,
+                "addr": "0x18",
+                "expect": [
+                    {
+                        "reg": "0x00",
+                        "mask": "0xff",
+                        "value": "0x12",
+                        "bytes": 1
+                    }
+                ]
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "accel",
+            "component_name": "bosch,bmi260",
+            "i2c": {
+                "port": 0,
+                "addr": "0x68",
+                "expect": [
+                    {
+                        "reg": "0x00",
+                        "mask": "0xff",
+                        "value": "0x27",
+                        "bytes": 1
+                    }
+                ]
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "accel",
+            "component_name": "bosch,bmi220",
+            "i2c": {
+                "port": 0,
+                "addr": "0x68",
+                "expect": [
+                    {
+                        "reg": "0x00",
+                        "mask": "0xff",
+                        "value": "0x26",
+                        "bytes": 1
+                    }
+                ]
+            },
+            "probe": "direct"
+        }
+    ]
+}

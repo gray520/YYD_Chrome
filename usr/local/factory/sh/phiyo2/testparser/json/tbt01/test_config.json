@@ -1,0 +1,34 @@
+{
+  "main": {
+    "profile": {
+      "using_file": "TBT01",
+      "config_type": "ini"
+    },
+    "test_timeout": "TestRetry,TestTimeout,20",
+    "retry_delay": "TestRetry,RetryDelay,1000",
+    "refind_timeout": "RefindTBT01,RefindTimeout,20",
+    "refind_delay": "RefindTBT01,RefindDelay,1000",
+    "reset_delay": "DeviceDelay,Reset,100",
+    "switch_delay": "DeviceDelay,Switch,2000",
+    "response_delay": "DeviceDelay,Response,1",
+    "u3_read_speed": "UsbSettings,ReadSpeedMin,400",
+    "u3_write_speed": "UsbSettings,WriteSpeedMin,400",
+    "tb_read_speed": "ThunderboltSettings,ReadSpeedMin,1000",
+    "tb_write_speed": "ThunderboltSettings,WriteSpeedMin,1000",
+    "tb_wait_switch_timeout": "ThunderboltSettings,WaitSwitchTimeOut,30000",
+    "pd_voltage": "PdSettings,PdVoltage,20000",
+    "pd_current": "PdSettings,PdCurrent,3000",
+    "pd_voltage_max": "PdSettings,PdVoltageMax,21000",
+    "pd_voltage_min": "PdSettings,PdVoltageMin,19000",
+    "pd_current_max": "PdSettings,PdCurrentMax,3000",
+    "pd_current_min": "PdSettings,PdCurrentMin,500",
+    "reset_u3_per_retry": "UsbSettings,ResetUsb3PerRetry,5",
+    "reset_tb_per_retry": "ThunderboltSettings,ResetThunderboltPerRetry,5"
+  },
+  "gui": {
+    "profile":{
+      "using_file": "GUI",
+      "config_type": "ini"
+    }
+  }
+}

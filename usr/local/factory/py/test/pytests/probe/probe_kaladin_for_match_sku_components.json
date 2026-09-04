@@ -1,0 +1,104 @@
+{
+  "audio_codec": {
+    "audio_codec": {
+      "eval": "audio_codec"
+    }
+  },
+  "cpu": {
+    "cpu": {
+      "eval": "generic_cpu"
+    }
+  },
+  "flash_chip": {
+    "flash_chip": {
+      "eval": "flash_chip:main"
+    }
+  },
+  "wireless": {
+    "wlan0": {
+      "eval": "shell:ifconfig wlan0"
+    }
+  },
+  "bluetooth": {
+    "hci0": {
+      "eval": "shell:hciconfig hci0"
+    }
+  },
+  "battery": {
+    "battery": {
+      "eval": "generic_battery"
+    }
+  },
+  "storage": {
+    "storage": {
+      "eval": "generic_storage"
+    }
+  },
+  "camera": {
+    "camera": {
+      "eval": "generic_camera"
+    }
+  },
+  "tpm": {
+    "tpm": {
+      "eval": "tpm"
+    }
+  },
+  "touchpad": {
+    "touchpad": {
+      "eval": {
+        "input_device": {
+          "device_type": "touchpad"
+        }
+      }
+    }
+  },
+  "stylus": {
+    "stylus": {
+      "eval": {
+        "input_device": {
+          "device_type": "stylus"
+        }
+      }
+    }
+  },
+  "base_accel": {
+    "generic": {
+      "eval": [
+        {
+          "shell": {
+            "command": "cat /sys/bus/platform/devices/cros-ec-accel.*/iio:device*/label | grep accel-base",
+            "key": "name"
+          }
+        }
+      ],
+      "expect": {
+        "name": "accel-base"
+      }
+    }
+  },
+  "lid_accel": {
+    "generic": {
+      "eval": [
+        {
+          "shell": {
+            "command": "cat /sys/bus/platform/devices/cros-ec-accel.*/iio:device*/label | grep accel-display",
+            "key": "name"
+          }
+        }
+      ],
+      "expect": {
+        "name": "accel-display"
+      }
+    }
+  },
+  "touchscreen": {
+    "touchscreen": {
+      "eval": {
+        "input_device": {
+          "device_type": "touchscreen"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "$defs": {
+    "jRef": {
+      "type": "string",
+      "pattern": "^:\\w+(\\.(\\?|\\w+))*$|^\\$options\\.\\w+(\\.(\\?|\\w)+)*$|^\\.*(\\.(\\?|\\w+))+$"
+    },
+    "jVar": {
+      "type": "string",
+      "pattern": "\\?<([\\w_()/ ]*)?(;(int|str|float|bool)(;([^,;\\s]+))?(;([0-9]+),([0-9]+)(,[0-9]+)?)?)?>"
+    },
+    "jInt": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        {"type": "integer"},
+        {
+          "type": "string",
+          "pattern": "^(0x|\\\\\\\\x)[0-9abcdefABCDEF ]+$|^([0-9]+)|(\\\\\\\\o[01234567]+)$|^(\\\\\\\\b[01]+)$"
+        }
+      ]
+    },
+    "jBytes": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/jInt"
+        },
+        {
+          "type": "string",
+          "pattern": "^\\\\\\\\a[0-9abcdefABCDEF ]+$"
+        }
+      ]
+    },
+    "jNumber": {
+      "oneOf": [
+        { "type": "number" },
+        { "$ref": "#/$defs/jInt" }
+      ]
+    },
+    "jBool": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        { "type": "boolean" }
+      ]
+    },
+    "jObject": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        {
+          "type": "object",
+          "properties": {
+            "profile": {"type": "object"},
+            "options": {"type": "object"},
+            "name": {"type": "string"}
+          }
+        }
+      ]
+    },
+    "jArray": {
+      "oneOf": [
+        { "$ref": "#/$defs/jRef" },
+        {
+          "type": "array",
+          "additionalItems": [
+            {
+              "type": "object",
+              "properties": { "name": {"type": "string", "pattern": "^profile$"} },
+              "required": ["name"]
+            },
+            {
+              "type": "object",
+              "properties": { "name": {"type": "string", "pattern": "^options$"} },
+              "required": ["name"]
+            }
+          ]
+        }
+      ]
+    },
+    "jCommandFormatProfile": {
+      "type": "object",
+      "properties": {
+        "is_to_ascii": {"type": "boolean"},
+        "is_check_sum": { "type": "boolean" }
+      },
+      "if": {
+        "properties": { "is_check_sum":  {"const": true } }
+      },
+      "then": {
+        "properties": {
+          "check_sum_section": { "type": "string" }
+        },
+        "required": ["check_sum_section"]
+      }
+    },
+   "jCommandFormatSection": {
+     "allOf": [
+       {"$ref": "#/$defs/jObject"},
+       {
+         "properties": {
+           "name": {"type": "string"},
+           "index": {"$ref": "#/$defs/jInt"},
+           "length": {"$ref": "#/$defs/jInt"},
+           "is_to_ascii": {"$ref": "#/$defs/jBool"},
+           "is_check_sum": {"$ref": "#/$defs/jBool"},
+           "default_bytes": {"$ref": "#/$defs/jBytes"}
+         },
+         "required": ["name"]
+       }
+     ]
+   }
+  },
+  "type": "object",
+  "properties": {
+    "profile": { "$ref": "#/$defs/jCommandFormatProfile" },
+    "options": { "type": "object" }
+  },
+  "patternProperties": {
+    "^\\w+CommandFormat\\w*$": {
+      "type": "array",
+      "items": [
+        {"$ref": "#/$defs/jCommandFormatSection"}
+      ],
+      "additionalItems": {
+        "$ref": "#/$defs/jCommandFormatSection"
+      }
+    }
+  },
+  "additionalProperties": false
+}

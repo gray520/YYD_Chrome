@@ -1,0 +1,1268 @@
+{
+    "manifest_version": 1,
+    "ec_version": "kaladin-16463.2.178",
+    "component_list": [
+        {
+            "component_type": "charger",
+            "component_name": "intersil,isl95522",
+            "i2c": {
+                "port": 2,
+                "addr": "0x9"
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730300000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730310000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730330000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730340000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730350000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730360000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730380000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730390000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730420000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730430000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730440000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730450000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730460000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730470000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730480000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p-vb",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304C0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p-vb",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304E0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p-vb",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304F0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl8040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730310000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl9040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730340000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl9040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730350000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "parade,ps8762",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730360000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl9040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730380000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,tusb1044",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730460000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,tusb1044",
+            "i2c": {
+                "port": 1,
+                "addr": "0x66",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304F0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 0
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730300000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730310000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730330000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730340000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730350000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730360000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730380000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730390000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730420000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730430000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730440000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730450000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730460000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730470000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730480000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5453p-vb",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304C0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p-vb",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304E0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "pdc",
+            "component_name": "realtek,rts5452p-vb",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304F0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "direct"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl8040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730310000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl9040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730340000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl9040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730350000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "ite,it5205",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730360000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,jhl9040",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730380000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,tusb1044",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f4730460000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "indirect"
+        },
+        {
+            "component_type": "mux",
+            "component_name": "realtek,tusb1044",
+            "i2c": {
+                "port": 1,
+                "addr": "0x67",
+                "expect": [
+                    {
+                        "reg": "0x3A",
+                        "write_data": "0x03000026",
+                        "bytes": 0
+                    },
+                    {
+                        "reg": "0x80",
+                        "multi_byte_mask": "0x000000000000000000000000000000000000000000000000000000ffffffffffff0000000000",
+                        "multi_byte_value": "0x000000000000000000000000000000000000000000000000000000474f4f47304F0000000000",
+                        "bytes": 38
+                    }
+                ]
+            },
+            "usbc": {
+                "port": 1
+            },
+            "probe": "indirect"
+        }
+    ]
+}

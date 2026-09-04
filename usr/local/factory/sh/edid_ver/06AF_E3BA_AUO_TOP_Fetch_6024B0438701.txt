@@ -1,0 +1,5 @@
+Supplier : 06AF
+PID : E3BA
+TCON FW ver. : A1
+TOP FW ver. : A1
+A1A1
