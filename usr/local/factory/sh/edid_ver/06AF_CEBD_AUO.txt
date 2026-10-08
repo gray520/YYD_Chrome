@@ -1,0 +1,5 @@
+Supplier : 06AF
+PID : CEBD
+TCON FW ver. : 01
+TOP FW ver. : FF
+01FF

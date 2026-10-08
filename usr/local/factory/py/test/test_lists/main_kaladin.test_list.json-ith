@@ -3,7 +3,7 @@
     "common.test_list",
     "generic_main.test_list"
   ],
-  "label": "Kaladin Main Test-List 20260414",
+  "label": "Kaladin Main Test-List 20260916",
   "constants": {
     "phase": "PVT",
     "release_version": "16437.0.0",
@@ -314,15 +314,21 @@
         "Barrier",
         "SetAttestID",
         "TabletModeOff",
+        "RestartUI",
+        "Sleep1",
         "Keyboard",
         "KeyboardPowerButton",
         "AudioJack",
         "Backlight",
         "TabletModeOff",
+        "RestartUI",
+        "Sleep1",
         "KeyboardBacklight",
         "LEDBattery",
         "FrontCameraLED",
         "TabletModeOff",
+        "RestartUI",
+        "Sleep1",
         "Touchpad",
         "Touchscreen",
         "FrontCameraQRScan",
@@ -405,7 +411,9 @@
       "label": "Finalize",
       "subtests": [
         "SyncFactoryServer",
+        "CopyManifestFromRelease",
         "KaladinCopyManifestToCME",
+        "CopyISHFWTolib",
         "DeletePVTDLMSKUID",
         "ClearUnknownRWVPD",
         "CopyMiniOS",
@@ -418,6 +426,9 @@
     "GRTItems": {
       "inherit": "FlattenGroup",
       "subtests": [
+        "CopyManifestFromRelease",
+        "KaladinCopyManifestToCME",
+        "CopyISHFWTolib",
         "TPMVerifyAndClear",
         "GetIntelDescriptorStatus",
         "LockIntelDescriptor",
@@ -1044,6 +1055,7 @@
         "CopyISHFWTolib",
         "FullRebootStep",
         "SyncFactoryServer",
+        "CopyManifestFromRelease",
         "KaladinCopyManifestToCME",
         "Delay30S",
         "WriteHWID",
@@ -1990,6 +2002,26 @@
       "args": {
         "commands": [
           "bash /usr/local/factory/sh/phiyo2/run.sh"
+        ]
+      }
+    },
+    "RestartUI": {
+      "retries": 2,
+      "pytest_name": "exec_shell",
+      "label": "Restart UI Screen",
+      "args": {
+        "commands": [
+          "sleep 2 && restart ui"
+        ]
+      }
+    },
+    "Sleep1": {
+      "retries": 2,
+      "pytest_name": "exec_shell",
+      "label": "IDLE 1",
+      "args": {
+        "commands": [
+          "sleep 1"
         ]
       }
     },
