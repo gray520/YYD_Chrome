@@ -1,0 +1,6 @@
+Supplier:30E4
+PID:0802
+TCON FW ver:03
+TOP FW ver:02
+0302
+
