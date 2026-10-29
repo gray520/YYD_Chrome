@@ -92,3 +92,10 @@ if [ "${PID}" == "0DC5" ] || [ "${PID}" == "CEB6" ] || [ "${PID}" == "149A" ]; t
   fi
 fi
 
+if [ "${PID}" == "0802" ]; then 
+  cd /usr/local/factory/uniformity/*"${PID}"*
+  bash lgd_test.sh
+  if [ $? != 0 ]; then
+    exit 1
+  fi
+fi
